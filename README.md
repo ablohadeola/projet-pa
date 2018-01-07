@@ -4,10 +4,10 @@ Les projets seront à déposer sur Jalon au plus tard le vendredi 12 janvier sou
 
 * Une archive contenant les sources du projet (un projet Eclipse ou NetBeans), pas les binaires !
 * Un rapport (10 pages mininum, 12 pages maximum) qui décrit
-** La participation de chacun des membres de l'équipe ;
-** La procédure à suivre pour tester votre projet ;
-** Un calendrier des grandes étapes du projet (par membre) ;
-** Pour chacun des 5 points énoncés au début (fonctionnalité, chargement dynamique, persistance, modularité, suivi), la façon dont ils ont été adressés ou pas et les aspects remarquables.  
+	* La participation de chacun des membres de l'équipe ;
+	* La procédure à suivre pour tester votre projet ;
+	* Un calendrier des grandes étapes du projet (par membre) ;
+	* Pour chacun des 5 points énoncés au début (fonctionnalité, chargement dynamique, persistance, modularité, suivi), la façon dont ils ont été adressés ou pas et les aspects remarquables.  
 * La procédure pour créer de nouveaux plugins 
 * Plusieurs exemples de plugins (au moins **6**) avec une courte description (10 lignes maximum) de ce qu'ils font.
 
