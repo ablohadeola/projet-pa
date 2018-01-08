@@ -82,8 +82,8 @@ public class App {
 	}
 	
 	public boolean someoneIsDead() {
-		if(robots.get(0).getLife() <= 0 || robots.get(1).getLife() <= 0) {
-			return true;
+		for(Robot r : robots) {
+			if(r.getLife() <= 0) return true;
 		}
 		return false;
 	}
