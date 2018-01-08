@@ -72,6 +72,16 @@ public class Grille implements Cloneable {
    
    
 
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 	// --------------------------              *** Classe interne Cellule
 	   
 	class Cellule {
@@ -512,6 +522,41 @@ public class Grille implements Cloneable {
 		         
 		         return resultat;
 		      }
+		     
+		     
+		     
+		     
+		     
+		  // ---                                            Methode distance
+		     
+		     /**
+		      *
+		      * @param cible
+		      * @return
+		      * @throws Throwable
+		      */
+		        
+		       public int distance(Cellule cible) throws Throwable {
+		       	
+		          // Controler la validite des parametres
+		          //
+		          if (cible == null) throw new Throwable("-2.1");
+		       	 
+		          int ligneCible= cible.ligne;
+		          int colonneCible= cible.colonne;
+		       
+		          int x= Math.abs(ligne - ligneCible);
+		          int y= Math.abs(colonne - colonneCible);
+		          
+		          return Math.max(x, y);
+		       }
+		     
+		     
+		     
+		     
+		     
+		     
+		     
 		     
 		     
 		     
