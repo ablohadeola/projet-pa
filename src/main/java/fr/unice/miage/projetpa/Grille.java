@@ -85,8 +85,91 @@ public class Grille implements Cloneable {
 		          this.colonne= colonne;
 		       } 
 		      
-		      
-		      
+		      //-- 		Methodes getter et setter 
+		      /**
+		      *
+		      * @return
+		      */
+		        
+		       public int getLigne() {return ligne;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public int getColonne() {return colonne;}
+		       
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getSymbole() {return symbole;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getCouleur() {return couleur;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getMarque() {return marque;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public int    getPoids() {return poids;}
+		    
+		    // ---                                    Accesseurs de modification
+		    
+		     /**
+		      *
+		      * @param symbole
+		      */
+		        
+		       public void setSymbole(Object symbole) {this.symbole= symbole;}
+
+		     /**
+		      *
+		      * @param couleur
+		      */
+		     public void setCouleur(Object couleur) {this.couleur= couleur;}
+
+		     /**
+		      *
+		      * @param marque
+		      */
+		     public void setMarque (Object marque)  {this.marque= marque;}
+
+		     /**
+		      *
+		      * @param poids
+		      */
+		     public void setPoids  (int    poids)   {this.poids= poids;}
+		       
+		     /**
+		      *
+		      */
+		     public void resetSymbole() {symbole= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetCouleur() {couleur= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetMarque () {marque= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetPoids  () {poids= 0;}
+		    
 		      
 		      
 		      
