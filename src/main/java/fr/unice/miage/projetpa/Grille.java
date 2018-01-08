@@ -172,7 +172,22 @@ public class Grille implements Cloneable {
 		    
 		      
 		      
-		      
+		     // ---            Methodes heritees de Object
+		     
+		     public Object clone() {
+		    	   
+		         try {
+		             Cellule cel = new Cellule();
+		             cel.setCouleur(this.getCouleur());
+		             cel.setMarque(this.getMarque());
+		             cel.setPoids(this.getPoids());
+		             cel.setSymbole(this.getSymbole());
+		             return cel;
+		             }
+		         catch (Throwable e){return null;}
+		            }
+		     
+		     
 		      
 		      
 		      
