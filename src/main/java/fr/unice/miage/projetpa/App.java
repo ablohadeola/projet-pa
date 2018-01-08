@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
+import fr.unice.miage.projetpa.plugins.attaque.AttaqueDistance;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
 import fr.unice.miage.projetpa.plugins.deplacement.RandomMove;
 import fr.unice.miage.projetpa.plugins.graphique.RobotColor;
@@ -105,6 +106,11 @@ public class App {
 				}
 			} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
 				attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
+			} else if(attaquant.getAtkType() == Robot.AtkType.DISTANCE) {
+				//Si atk a distance & distance entre les robots supérieur à un tier de l'arene
+				if(distance >= Math.abs(Math.ceil(arenaSize - (arenaSize / 3)))){
+					attaque = OutilReflection.construire(AttaqueDistance.class);
+				}
 			}
 			if(attaque != null) {
 				int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
