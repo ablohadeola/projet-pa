@@ -22,7 +22,7 @@ public class Grille implements Cloneable {
     
    public Grille() {
    	
-   	  matrice= new Cellule[5][5];
+   	  matrice= new Cellule[10][10];
    	  
    	  for (int i=0; i<5; i++)
    	     for (int j=0; j<5; j++) {
