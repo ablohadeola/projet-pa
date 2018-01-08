@@ -14,6 +14,9 @@ public class Cell extends JPanel {
 	private static final long serialVersionUID = -1224449844680443435L;
 	private Robot robot = null;
 	
+	/* 
+	 * Une cellule est un JPanel possedant des coutours noirs
+	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); 
 		this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
@@ -29,6 +32,9 @@ public class Cell extends JPanel {
 		this.repaint();
 	}
 	
+	/**
+	 * Indique si un robot est positionne sur cette cellule
+	 */
 	public boolean hasRobotOnIt() {
 		if(robot != null) {
 			this.setColor(robot.getColor());

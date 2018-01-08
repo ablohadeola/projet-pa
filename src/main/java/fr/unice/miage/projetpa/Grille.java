@@ -14,7 +14,7 @@ public class Grille extends JPanel {
 	private Cell[][] matrice;
 	
 	/**
-	 * Constructeur par defaut d'une grille 10 par 10
+	 * Constructeur d'une grille de taille App.arenaSize
 	 */
 	public Grille() {
 		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
@@ -30,26 +30,7 @@ public class Grille extends JPanel {
 		}
 	}
 	
-	public Grille(int nbLignes, int nbColonnes) throws Throwable {
-		// Controler la validite des parametres
-		if (nbLignes < 5)
-			throw new Throwable("-2.1");
-		if (nbColonnes < 5)
-			throw new Throwable("-2.2");
-		// Initialiser l'attribut
-		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
-		this.setLayout(gridLayout);
-		matrice = new Cell[nbLignes][nbColonnes];
-		for (int i = 0; i < nbLignes; i++) {
-			for (int j = 0; j < nbColonnes; j++) {
-				Cell cell = new Cell();
-				cell.setColor(Color.WHITE);
-				matrice[j][i] = cell;
-				this.add(cell);
-			}
-		}
-	}
-	
+	//Parcours toutes les cells afin de trouver l'emplacement des robots et d'affecter leurs couleurs aux cellules
 	public void update() {
 		for (int i = 0; i < getNbLignes(); i++) {
 			for (int j = 0; j < getNbColonnes(); j++) {
@@ -63,12 +44,14 @@ public class Grille extends JPanel {
 		}
 	}
 	
+	//Si deux cellules se trouvent sur une meme ligne ou meme colonne
 	public boolean isOnSameLineOrColumn(Cell c1, Cell c2) {
 		if(c1.getX() == c2.getX() || c1.getY() == c2.getY()) {
 			return true;
 		} else return false;
 	}
 	
+	//Retourne la distance entre deux cellules positionnees sur une meme ligne ou colonne
 	public int getDistance(Cell c1, Cell c2) {
 		if(isOnSameLineOrColumn(c1, c2)) {
 			if(c1.getX() == c2.getX()) {
