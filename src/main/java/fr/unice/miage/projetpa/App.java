@@ -77,6 +77,8 @@ public class App {
 			attaque = OutilReflection.construire(AttaqueCourte.class);
 		} else if(attaquant.getAtkType() == Robot.AtkType.LOURDE) {
 			attaque = OutilReflection.construire(AttaqueLourde.class);
+		} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
+			attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
 		}
 		OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
 	}
