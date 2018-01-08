@@ -1,10 +1,10 @@
-package plugins.attaque;
+package fr.unice.miage.projetpa.plugins.attaque;
 
 import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
-@Plugin(Nom = "AttaqueLourde", Type = Plugin.Type.Attaque)
+@Plugin(Nom = "attaqueLourde", Type = Plugin.Type.Attaque)
 public class AttaqueLourde {
 
 	private int degat = 25;
@@ -16,13 +16,15 @@ public class AttaqueLourde {
 	 * @param emetteur
 	 * @param recepteur
 	 */
-	@PluginInfos(name = "attaque", who = "")
+
+	@PluginInfos(name = "attaque", who = "Robot")
 	public void attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= energyUse) {
-			System.out.println("Vie recepteur de l'attaque avant attaque : " + recepteur.getLife());
+			System.out.println(emetteur.getName() + " attaque lourde " + recepteur.getName());
 			emetteur.setEnergy(emetteur.getEnergy() - energyUse);
 			recepteur.setLife(recepteur.getLife() - degat);
-			System.out.println("Vie recepteur de l'attaque apres attaque : " + recepteur.getLife());
+			System.out.println("Vie de " + recepteur.getName() + " : " + recepteur.getLife());
+			System.out.println("Energy de " + emetteur.getName() + " : " + emetteur.getEnergy());
 		} else {
 			System.out.println("Energie de " + emetteur.getName() + " est insuffisante !");
 		}

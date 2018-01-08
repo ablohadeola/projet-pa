@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
+import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.deplacement.RandomMove;
 import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlack;
@@ -71,7 +72,12 @@ public class App {
 	}
 	
 	public void attaque(Robot attaquant, Robot receveur) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-		Object attaque = OutilReflection.construire(AttaqueCourte.class);
+		Object attaque = null;
+		if(attaquant.getAtkType() == Robot.atkType.Courte) {
+			attaque = OutilReflection.construire(AttaqueCourte.class);
+		} else if(attaquant.getAtkType() == Robot.atkType.Lourde) {
+			attaque = OutilReflection.construire(AttaqueLourde.class);
+		}
 		OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
 	}
 	

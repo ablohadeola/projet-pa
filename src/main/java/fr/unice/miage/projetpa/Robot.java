@@ -17,16 +17,19 @@ public class Robot extends JComponent{
 	private int posX;
 	private int posY;
 	private depType depType;
+	private atkType atkType;
 	
 	public static enum depType { Aleatoire, Intelligent};
+	public static enum atkType { Courte, Lourde};
 	
 	private Random rnd = new Random();
 
-	public Robot(String name, depType depType) {
+	public Robot(String name, depType depType, atkType atkType) {
 		this.name = name;
 		this.posX = rnd.nextInt(700)+50;
 		this.posY = rnd.nextInt(700)+50;
 		this.depType = depType;
+		this.atkType = atkType;
 	}
 	
 	public void paint(Graphics g) {
@@ -87,6 +90,14 @@ public class Robot extends JComponent{
 
 	public void setDepType(depType depType) {
 		this.depType = depType;
+	}
+
+	public atkType getAtkType() {
+		return atkType;
+	}
+
+	public void setAtkType(atkType atkType) {
+		this.atkType = atkType;
 	}
 	
 }
