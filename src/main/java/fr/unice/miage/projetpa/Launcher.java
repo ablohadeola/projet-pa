@@ -1,7 +1,6 @@
 package fr.unice.miage.projetpa;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Launcher {

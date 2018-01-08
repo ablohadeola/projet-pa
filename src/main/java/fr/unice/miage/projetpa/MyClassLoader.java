@@ -30,6 +30,7 @@ public class MyClassLoader extends SecureClassLoader {
 		return defineClass(name, b, 0, b.length);
 	}
 
+	@SuppressWarnings("resource")
 	private byte[] loadClassData(String name) throws ClassNotFoundException {
 		for (File file : path) {		
 			if (file.isDirectory()) {

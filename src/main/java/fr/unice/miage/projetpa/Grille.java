@@ -5,21 +5,23 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import fr.unice.miage.projetpa.Grille_old.Cellule;
-
 public class Grille extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3313385453404797052L;
 	private Cell[][] matrice;
 	
 	/**
 	 * Constructeur par defaut d'une grille 10 par 10
 	 */
 	public Grille() {
-		GridLayout gridLayout = new GridLayout(10, 10);
+		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
 		this.setLayout(gridLayout);
-		matrice = new Cell[10][10];
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
+		matrice = new Cell[App.arenaSize][App.arenaSize];
+		for (int i = 0; i < App.arenaSize; i++) {
+			for (int j = 0; j < App.arenaSize; j++) {
 				Cell cell = new Cell();
 				cell.setColor(Color.WHITE);
 				matrice[j][i] = cell;
@@ -35,7 +37,7 @@ public class Grille extends JPanel {
 		if (nbColonnes < 5)
 			throw new Throwable("-2.2");
 		// Initialiser l'attribut
-		GridLayout gridLayout = new GridLayout(10, 10);
+		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
 		this.setLayout(gridLayout);
 		matrice = new Cell[nbLignes][nbColonnes];
 		for (int i = 0; i < nbLignes; i++) {
@@ -70,10 +72,10 @@ public class Grille extends JPanel {
 	public int getDistance(Cell c1, Cell c2) {
 		if(isOnSameLineOrColumn(c1, c2)) {
 			if(c1.getX() == c2.getX()) {
-				return Math.abs(c1.getX() - c2.getX());
+				return Math.abs(c1.getY() - c2.getY());
 			} else {
 				if(c1.getY() == c2.getY()) {
-					return Math.abs(c1.getY() - c2.getY());
+					return Math.abs(c1.getX() - c2.getX());
 				}
 			}
 		} 
@@ -90,10 +92,10 @@ public class Grille extends JPanel {
 	
 	public Cell getCell(int ligne, int colonne) throws Throwable {
 		// Controler la validite des parametres
-		if (ligne < 1 || ligne > getNbLignes())
-			throw new Throwable("-2.1");
-		if (colonne < 1 || colonne > getNbColonnes())
-			throw new Throwable("-2.2");
+//		if (ligne < 1 || ligne > getNbLignes())
+//			throw new Throwable("-2.1");
+//		if (colonne < 1 || colonne > getNbColonnes())
+//			throw new Throwable("-2.2");
 		return matrice[ligne - 1][colonne - 1];
 	}
 

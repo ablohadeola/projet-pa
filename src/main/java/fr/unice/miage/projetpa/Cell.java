@@ -6,10 +6,12 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import fr.unice.miage.projetpa.plugins.core.Plugin;
-
 public class Cell extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1224449844680443435L;
 	private Robot robot = null;
 	
 	public void paintComponent(Graphics g) {

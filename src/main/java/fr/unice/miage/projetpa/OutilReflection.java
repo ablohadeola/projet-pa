@@ -4,9 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import fr.unice.miage.projetpa.plugins.core.Plugin;
 
 public class OutilReflection {
 
@@ -40,14 +37,14 @@ public class OutilReflection {
         return null;
     }
 	
-	public static Object construire(Class pluginClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor constructor = pluginClass.getDeclaredConstructor();
+	public static Object construire(Class<?> pluginClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<?> constructor = pluginClass.getDeclaredConstructor();
         return constructor.newInstance();
     }
 
     /** creer un objet avec nom de classe */
     public static Object construire(String className) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException{
-        Class c = null; 
+        Class<?> c = null; 
         try {
             c = Class.forName(className); 
         } catch(ClassNotFoundException cnfe) {

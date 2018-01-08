@@ -1,30 +1,16 @@
 package fr.unice.miage.projetpa;
 
-import java.awt.Button;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
-import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.deplacement.RandomMove;
 import fr.unice.miage.projetpa.plugins.graphique.RobotColor;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlack;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlue;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorGreen;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorRed;
 
 /**
  * Hello world!
@@ -32,14 +18,13 @@ import fr.unice.miage.projetpa.plugins.graphique.RobotColorRed;
  */
 public class App {
 
-	private Repository repository;
+	public static int arenaSize = 10;
+	
 	private JFrame frame;
 	private Grille grille;
 	private ArrayList<Robot> robots;
-	private Random rnd = new Random();
-
+	
 	public App(Repository repository, ArrayList<Robot> robots) {
-		this.repository = repository;
 		this.robots = robots;
 	}
 
@@ -48,7 +33,7 @@ public class App {
 			frame = new JFrame("Robot Plugins War");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setBounds(100, 100, 800, 800);
-			grille = new Grille();
+			grille = new Grille(arenaSize, arenaSize);
 			grille.setBorder(new EmptyBorder(5, 5, 5, 5));
 			for (Robot r : robots) {
 				instanciateRobots(r);
@@ -106,7 +91,7 @@ public class App {
 				attaque = OutilReflection.construire(AttaqueLourde.class);
 			}
 		}
-		if(distance != -1) {
+		if(distance != -1 && attaque != null) {
 			int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
 			if(attaquant.getEnergy() > energyUse) {
 				hasEnoughtEnergy = (Boolean) OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
@@ -136,7 +121,7 @@ public class App {
 			}
 		//BAS
 		} else if(next_move == 2) {
-			if(robot.getPosY() <= 9) {
+			if(robot.getPosY() <= App.arenaSize-1) {
 				robot.setPosY(robot.getPosY()+1);
 			} else {
 				move(robot);
@@ -152,7 +137,7 @@ public class App {
 			}
 		//DROITE
 		} else {
-			if(robot.getPosX() <= 9) {
+			if(robot.getPosX() <= App.arenaSize-1) {
 				robot.setPosX(robot.getPosX()+1);
 			} else {
 				move(robot);
