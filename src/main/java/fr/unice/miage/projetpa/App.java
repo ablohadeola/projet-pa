@@ -128,7 +128,7 @@ public class App {
 						while (memo_random == random_value) {
 							random_value = rnd.nextInt(4) + 1;
 						}
-						switch (random_value) {
+						/*switch (random_value) {
 						case 1:
 							if (a.annotationType().getSimpleName().equals("RobotColorBlack")) {
 								RobotColorBlack robot_color = m.getAnnotation(RobotColorBlack.class);
@@ -165,7 +165,7 @@ public class App {
 								robot.setColor(new Color(r, g, b));
 							}
 							break;
-						}
+						}*/
 						memo_random = random_value;
 					}
 				}

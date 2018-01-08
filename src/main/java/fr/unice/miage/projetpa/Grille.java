@@ -1,4 +1,5 @@
 package fr.unice.miage.projetpa;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,55 +31,41 @@ public class Grille implements Cloneable {
    	        try {matrice[i][j]= new Cellule(i+1,j+1);}
    	        catch(Throwable e){return;}
    	     }
-   } 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+   }
+
+
+   public int getNbLignes() {
+   		return matrice.length;
+   }
+
+   public int getNbColonnes() {
+   		return matrice[0].length;
+   }
 
 	// --------------------------              *** Classe interne Cellule
 	   
-	public class Cellule {
-		   private final int ligne;
-		   private final int colonne;
-		   private Object    symbole;
-		   private Object    couleur;
-		   private Object    marque;
-		   private int       poids;
-		   
-		      // ---                                  Constructeur par defaut
+	class Cellule {
+		private final int ligne;
+		private final int colonne;
+		private Object    symbole;
+		private Object    couleur;
+		private Object    marque;
+		private int       poids;
+	   
+    
+	    public Cellule() {
+	        ligne= 1;
+	        colonne= 1;
+	    }
+	      
 
-		    /**
-		     *
-		     */
-		    
-		      public Cellule() {
-		         ligne= 1;
-		         colonne= 1;
-		      }
-		      
-		      // ---                                        Constructeur normal
-
-		    
-		      public Cellule(int ligne, int colonne) throws Throwable {
-		             
-		          // Controler la validite des parametres
-		          //
-		          if (ligne<1 || ligne>getNbLignes()) throw new Throwable("-2.1");
-		          if (colonne<1 || colonne>getNbColonnes()) 
-		                                   throw new Throwable("-2.2");
-		          
+	    public Cellule(int ligne, int colonne) throws Throwable {
+	    	// Controler la validite des parametres
+	        //
+	        if (ligne<1 || ligne>getNbLignes()) throw new Throwable("-2.1");
+	        if (colonne<1 || colonne>getNbColonnes()) 
+	        	throw new Throwable("-2.2");
+	          
 		          // Memoriser la valeur des attributs
 		          //	
 		          this.ligne= ligne;
