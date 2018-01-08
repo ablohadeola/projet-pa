@@ -229,6 +229,21 @@ public class Grille implements Cloneable {
 		   
 		      
 		      
+		     
+		     public String toString () {
+		    	   	
+		         return "("+ ligne+ ", "+colonne+")";
+		      }
+		      
+		     
+		     
+		     
+		     
+		     
+		     
+		     
+		     
+		     
 		   }
 	
 	
