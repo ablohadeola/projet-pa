@@ -55,12 +55,12 @@ public class App {
 	
 	public void start() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Object moveInstance = OutilReflection.construire(RandomMove.class);
-		int value = (Integer) OutilReflection.invokeMethod(moveInstance, Plugin.Type.Deplacement, null);
+		int value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
 		//TODO Wait grille pour déplacement
 //		attaqueRobot(robots.get(0), robots.get(1));
 		//TODO @Melvin -> Adapter le code à l'outil reflection
-//		Object attaque = OutilReflection.construire(AttaqueCourte.class);
-//		OutilReflection.invokeMethod(attaque, Plugin.Type.Deplacement, robots.get(0), robots.get(1));
+		Object attaque = OutilReflection.construire(AttaqueCourte.class);
+		OutilReflection.invokeMethod(attaque, "attaque", robots.get(0), robots.get(1));
 	}
 
 	private void setRobotColor(Robot robot) {
