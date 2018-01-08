@@ -25,8 +25,8 @@ public class Grille implements Cloneable {
    	
    	  matrice= new Cellule[10][10];
    	  
-   	  for (int i=0; i<5; i++)
-   	     for (int j=0; j<5; j++) {
+   	  for (int i=0; i<10; i++)
+   	     for (int j=0; j<10; j++) {
    	     
    	        try {matrice[i][j]= new Cellule(i+1,j+1);}
    	        catch(Throwable e){return;}
