@@ -4,6 +4,12 @@ import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
+/**
+ * Ce plugin permet a un robot d'effectuer une attaque lourde sur un autre robot
+ * 
+ * @author Melvin
+ *
+ */
 @Plugin(Nom = "attaqueLourde", Type = Plugin.Type.Attaque)
 public class AttaqueLourde {
 
@@ -11,7 +17,7 @@ public class AttaqueLourde {
 	private int energyUse = 50;
 
 	/**
-	 * Attaque d'un robot par un autre
+	 * Le robot emetteur attaque le robot recepteur avec une attaque lourde
 	 * 
 	 * @param emetteur
 	 * @param recepteur
