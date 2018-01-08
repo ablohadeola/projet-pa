@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
+import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.deplacement.RandomMove;
 import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlack;
@@ -61,6 +62,9 @@ public class App {
 		//TODO @Melvin -> Adapter le code à l'outil reflection
 		Object attaque = OutilReflection.construire(AttaqueCourte.class);
 		OutilReflection.invokeMethod(attaque, "attaque", robots.get(0), robots.get(1));
+		Object attaqueLourde = OutilReflection.construire(AttaqueLourde.class);
+		OutilReflection.invokeMethod(attaqueLourde, "attaque", robots.get(0), robots.get(1));
+		OutilReflection.invokeMethod(attaqueLourde, "attaque", robots.get(0), robots.get(1));
 	}
 
 	private void setRobotColor(Robot robot) {
