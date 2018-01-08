@@ -26,7 +26,7 @@ public class Robot extends JComponent{
 	private AtkType atkType;
 	
 	public static enum DepType { ALEATOIRE, INTELLIGENT};
-	public static enum AtkType { COURTE, LOURDE, ABSORBE};
+	public static enum AtkType { COURTE, LOURDE, ABSORBE, DISTANCE};
 	
 	private Random rnd = new Random();
 
