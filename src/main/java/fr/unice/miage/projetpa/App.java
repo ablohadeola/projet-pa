@@ -73,17 +73,17 @@ public class App {
 	
 	public void attaque(Robot attaquant, Robot receveur) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Object attaque = null;
-		if(attaquant.getAtkType() == Robot.atkType.Courte) {
+		if(attaquant.getAtkType() == Robot.AtkType.COURTE) {
 			attaque = OutilReflection.construire(AttaqueCourte.class);
-		} else if(attaquant.getAtkType() == Robot.atkType.Lourde) {
+		} else if(attaquant.getAtkType() == Robot.AtkType.LOURDE) {
 			attaque = OutilReflection.construire(AttaqueLourde.class);
 		}
 		OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
 	}
 	
 	public boolean someoneIsDead() {
-		if(robots.get(0).getLife() <= 0 || robots.get(1).getLife() <= 0) {
-			return true;
+		for(Robot r : robots) {
+			if(r.getLife() <= 0) return true;
 		}
 		return false;
 	}
@@ -103,7 +103,7 @@ public class App {
 	
 	public int askNextMove(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		int value = -1;
-		if(robot.getDepType().equals(Robot.depType.Aleatoire)) {
+		if(robot.getDepType().equals(Robot.DepType.ALEATOIRE)) {
 			Object moveInstance = OutilReflection.construire(RandomMove.class);
 			value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
 		}
