@@ -7,7 +7,7 @@ import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 /**
  * Ce plugin permet a un robot d'absorber les points de degats d'un autre robot
  * 
- * @author Melvin
+ * @author Chamir
  *
  */
 @Plugin(Nom = "AttaqueAbsorbeVie", Type = Plugin.Type.Attaque)

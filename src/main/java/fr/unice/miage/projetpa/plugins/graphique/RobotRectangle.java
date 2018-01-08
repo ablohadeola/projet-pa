@@ -8,6 +8,7 @@ import java.awt.*;
 
 /**
 * Plugin pour dessiner des Robots Rectangulaires
+* @author Chamir
 */
 @Plugin(Nom ="RobotRectangle", Type=Plugin.Type.Graphique) 
 public class RobotRectangle{
