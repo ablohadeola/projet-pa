@@ -23,7 +23,7 @@ public class Grille implements Cloneable {
     
    public Grille() {
    	
-   	  matrice= new Cellule[5][5];
+   	  matrice= new Cellule[10][10];
    	  
    	  for (int i=0; i<5; i++)
    	     for (int j=0; j<5; j++) {
@@ -68,8 +68,119 @@ public class Grille implements Cloneable {
 	          
 		          // Memoriser la valeur des attributs
 		          //	
-		        this.ligne= ligne;
-		        this.colonne= colonne;
-	       }   
-	   }
+		          this.ligne= ligne;
+		          this.colonne= colonne;
+		       } 
+		      
+		      //-- 		Methodes getter et setter 
+		      /**
+		      *
+		      * @return
+		      */
+		        
+		       public int getLigne() {return ligne;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public int getColonne() {return colonne;}
+		       
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getSymbole() {return symbole;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getCouleur() {return couleur;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public Object getMarque() {return marque;}
+
+		     /**
+		      *
+		      * @return
+		      */
+		     public int    getPoids() {return poids;}
+		    
+		    // ---                                    Accesseurs de modification
+		    
+		     /**
+		      *
+		      * @param symbole
+		      */
+		        
+		       public void setSymbole(Object symbole) {this.symbole= symbole;}
+
+		     /**
+		      *
+		      * @param couleur
+		      */
+		     public void setCouleur(Object couleur) {this.couleur= couleur;}
+
+		     /**
+		      *
+		      * @param marque
+		      */
+		     public void setMarque (Object marque)  {this.marque= marque;}
+
+		     /**
+		      *
+		      * @param poids
+		      */
+		     public void setPoids  (int    poids)   {this.poids= poids;}
+		       
+		     /**
+		      *
+		      */
+		     public void resetSymbole() {symbole= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetCouleur() {couleur= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetMarque () {marque= null;}
+
+		     /**
+		      *
+		      */
+		     public void resetPoids  () {poids= 0;}
+		    
+		      
+		      
+		     // ---            Methodes heritees de Object
+		     
+		     public Object clone() {
+		    	   
+		         try {
+		             Cellule cel = new Cellule();
+		             cel.setCouleur(this.getCouleur());
+		             cel.setMarque(this.getMarque());
+		             cel.setPoids(this.getPoids());
+		             cel.setSymbole(this.getSymbole());
+		             return cel;
+		             }
+		         catch (Throwable e){return null;}
+		            }
+		     
+		     
+		      
+		      
+		      
+		   }
+	
+	
+	
+	
 }
