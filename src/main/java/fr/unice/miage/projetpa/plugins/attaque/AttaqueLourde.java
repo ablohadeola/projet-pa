@@ -4,6 +4,12 @@ import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
+/**
+ * Ce plugin permet a un robot d'effectuer une attaque lourde sur un autre robot
+ * 
+ * @author Melvin
+ *
+ */
 @Plugin(Nom = "attaqueLourde", Type = Plugin.Type.Attaque)
 public class AttaqueLourde {
 
@@ -11,7 +17,7 @@ public class AttaqueLourde {
 	private int energyUse = 50;
 
 	/**
-	 * Attaque d'un robot par un autre
+	 * Le robot emetteur attaque le robot recepteur avec une attaque lourde
 	 * 
 	 * @param emetteur
 	 * @param recepteur
@@ -20,10 +26,11 @@ public class AttaqueLourde {
 	@PluginInfos(name = "attaque", who = "Robot")
 	public void attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= energyUse) {
-			System.out.println("Vie recepteur de l'attaque avant attaque : " + recepteur.getLife());
+			System.out.println(emetteur.getName() + " attaque lourde " + recepteur.getName());
 			emetteur.setEnergy(emetteur.getEnergy() - energyUse);
 			recepteur.setLife(recepteur.getLife() - degat);
-			System.out.println("Vie recepteur de l'attaque apres attaque : " + recepteur.getLife());
+			System.out.println("Vie de " + recepteur.getName() + " : " + recepteur.getLife());
+			System.out.println("Energy de " + emetteur.getName() + " : " + emetteur.getEnergy());
 		} else {
 			System.out.println("Energie de " + emetteur.getName() + " est insuffisante !");
 		}

@@ -18,12 +18,12 @@ public class OutilReflection {
                 for (Method mt : pluginInfos.getDeclaredMethods()) {
                     if(mt.invoke(annotation).equals(name)){
  
-                        if(args.length > 0)
-                            System.out.println("Invoke " + name + " | with : "+ Arrays.toString(args));
-                        else if(cible != null)
-                            System.out.println("Invoke " + name + " | on : " + pluginName + " | with :" + cible);
-                        else
-                            System.out.println("Invoke " + name);
+//                        if(args.length > 0)
+//                            System.out.println("Invoke " + name + " | with : "+ Arrays.toString(args));
+//                        else if(cible != null)
+//                            System.out.println("Invoke " + name + " | on : " + pluginName + " | with :" + cible);
+//                        else
+//                            System.out.println("Invoke " + name);
  
                         if(args.length == 1)
                             return method.invoke(pluginName, cible, args[0]);
