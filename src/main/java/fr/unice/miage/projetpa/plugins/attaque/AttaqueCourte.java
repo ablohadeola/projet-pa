@@ -2,7 +2,6 @@ package fr.unice.miage.projetpa.plugins.attaque;
 
 import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
-import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
 @Plugin(Nom = "attaqueCourte", Type = Plugin.Type.Attaque)
@@ -17,7 +16,7 @@ public class AttaqueCourte {
 	 * @param emetteur
 	 * @param recepteur
 	 */
-	@PluginInfos(Type = Plugin.Type.Attaque, who = "Robot")
+	@PluginInfos(name = "attaque", who = "Robot")
 	public void attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= energyUse) {
 			System.out.println("Vie recepteur de l'attaque avant attaque courte : " + recepteur.getLife());

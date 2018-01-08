@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface PluginInfos {
-	fr.unice.miage.projetpa.plugins.core.Plugin.Type Type();
+	String name();
 	String who();
 }

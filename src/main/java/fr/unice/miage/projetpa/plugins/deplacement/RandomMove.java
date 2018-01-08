@@ -9,7 +9,7 @@ import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 @Plugin(Nom = "RandomMove", Type = Type.Deplacement)
 public class RandomMove {
 	
-	@PluginInfos(Type = Plugin.Type.Deplacement, who = "Robot")
+	@PluginInfos(name = "nextMove", who = "Robot")
 	public int nextMove() {
 		Random rnd = new Random();
         int value = rnd.nextInt(4) + 1;
