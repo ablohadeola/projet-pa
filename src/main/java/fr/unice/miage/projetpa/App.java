@@ -95,7 +95,7 @@ public class App {
 		if(distance != -1) {
 			if(attaquant.getAtkType() == Robot.AtkType.COURTE) {
 				//Si atk courte & distance entre les robots égal à 1
-				if(distance >= 1){
+				if(distance <= 1){
 					attaque = OutilReflection.construire(AttaqueCourte.class);
 				}
 			} else if(attaquant.getAtkType() == Robot.AtkType.LOURDE) {
