@@ -53,5 +53,28 @@ public class Robot extends JComponent{
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getEnergy() {
+		return energy;
+	}
+	
+	
 	
 }
