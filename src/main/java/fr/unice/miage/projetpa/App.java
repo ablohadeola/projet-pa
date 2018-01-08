@@ -54,13 +54,54 @@ public class App {
 	}
 	
 	public void start() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-		Object moveInstance = OutilReflection.construire(RandomMove.class);
-		int value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
-		//TODO Wait grille pour déplacement
-//		attaqueRobot(robots.get(0), robots.get(1));
-		//TODO @Melvin -> Adapter le code à l'outil reflection
+		int robotNumber = 0;
+		while(!someoneIsDead()) {
+			move(robots.get(robotNumber));
+			if(robotNumber == 0) { 
+				attaque(robots.get(0), robots.get(1)); 
+			} else {
+				attaque(robots.get(1), robots.get(0)); 
+			}
+			if(robotNumber == 0) { 
+				robotNumber++;
+			} else {
+				robotNumber--;
+			}
+		}
+	}
+	
+	public void attaque(Robot attaquant, Robot receveur) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		Object attaque = OutilReflection.construire(AttaqueCourte.class);
-		OutilReflection.invokeMethod(attaque, "attaque", robots.get(0), robots.get(1));
+		OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
+	}
+	
+	public boolean someoneIsDead() {
+		if(robots.get(0).getLife() <= 0 || robots.get(1).getLife() <= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void move(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		int next_move = askNextMove(robot);
+		if(next_move == 1) {
+			//TODO
+		} else if(next_move == 2) {
+			//TODO
+		} else if(next_move == 3) {
+			//TODO
+		} else {
+			//TODO
+		}
+	}
+	
+	public int askNextMove(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+		int value = -1;
+		if(robot.getDepType().equals(Robot.depType.Aleatoire)) {
+			Object moveInstance = OutilReflection.construire(RandomMove.class);
+			value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
+		}
+		return value;
 	}
 
 	private void setRobotColor(Robot robot) {

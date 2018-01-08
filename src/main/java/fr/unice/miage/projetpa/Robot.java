@@ -6,6 +6,8 @@ import java.util.Random;
 
 import javax.swing.JComponent;
 
+import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
+
 public class Robot extends JComponent{
 	
 	private String name;
@@ -14,13 +16,17 @@ public class Robot extends JComponent{
 	private Color color;
 	private int posX;
 	private int posY;
+	private depType depType;
+	
+	public static enum depType { Aleatoire, Intelligent};
 	
 	private Random rnd = new Random();
 
-	public Robot(String name) {
+	public Robot(String name, depType depType) {
 		this.name = name;
 		this.posX = rnd.nextInt(700)+50;
 		this.posY = rnd.nextInt(700)+50;
+		this.depType = depType;
 	}
 	
 	public void paint(Graphics g) {
@@ -74,7 +80,13 @@ public class Robot extends JComponent{
 	public int getEnergy() {
 		return energy;
 	}
-	
-	
+
+	public depType getDepType() {
+		return depType;
+	}
+
+	public void setDepType(depType depType) {
+		this.depType = depType;
+	}
 	
 }

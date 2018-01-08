@@ -8,7 +8,7 @@ import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 public class AttaqueCourte {
 
 	private int degat = 10;
-	private int energyUse = 15;
+	private int energyUse = 5;
 
 	/**
 	 * Attaque d'un robot par un autre
@@ -19,10 +19,11 @@ public class AttaqueCourte {
 	@PluginInfos(name = "attaque", who = "Robot")
 	public void attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= energyUse) {
-			System.out.println("Vie recepteur de l'attaque avant attaque courte : " + recepteur.getLife());
+			System.out.println(emetteur.getName() + " attaque courte " + recepteur.getName());
 			emetteur.setEnergy(emetteur.getEnergy() - energyUse);
 			recepteur.setLife(recepteur.getLife() - degat);
-			System.out.println("Vie recepteur de l'attaque apres attaque courte : " + recepteur.getLife());
+			System.out.println("Vie de " + recepteur.getName() + " : " + recepteur.getLife());
+			System.out.println("Energy de " + emetteur.getName() + " : " + emetteur.getEnergy());
 		} else {
 			System.out.println("Energie de " + emetteur.getName() + " est insuffisante !");
 		}
