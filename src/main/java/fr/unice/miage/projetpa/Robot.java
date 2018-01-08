@@ -1,7 +1,6 @@
 package fr.unice.miage.projetpa;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.JComponent;
@@ -30,17 +29,10 @@ public class Robot extends JComponent{
 
 	public Robot(String name, DepType depType, AtkType atkType) {
 		this.name = name;
-		this.posX = rnd.nextInt(700)+50;
-		this.posY = rnd.nextInt(700)+50;
+		this.posX = rnd.nextInt(App.arenaSize)+1;
+		this.posY = rnd.nextInt(App.arenaSize)+1;
 		this.depType = depType;
 		this.atkType = atkType;
-	}
-	
-	public void paint(Graphics g) {
-		this.posX = rnd.nextInt(700)+50;
-		this.posY = rnd.nextInt(700)+50;
-		System.out.println(posX + " " + posY);
-	    g.drawRect (posX, posY, 50, 50);  
 	}
 	
 	public int getPosX() {

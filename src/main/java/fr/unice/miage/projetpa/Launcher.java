@@ -1,12 +1,11 @@
 package fr.unice.miage.projetpa;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Launcher {
 
-	public static void main( String[] args ) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException
+	public static void main( String[] args ) throws Throwable
     {
     	File repository_path = new File("./target/classes");
     	Repository repository = new Repository(repository_path);

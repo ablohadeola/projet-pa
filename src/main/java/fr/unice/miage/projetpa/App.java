@@ -1,26 +1,16 @@
 package fr.unice.miage.projetpa;
 
 import java.awt.Color;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
-import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.deplacement.RandomMove;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlack;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorBlue;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorGreen;
-import fr.unice.miage.projetpa.plugins.graphique.RobotColorRed;
+import fr.unice.miage.projetpa.plugins.graphique.RobotColor;
 
 /**
  * Hello world!
@@ -28,40 +18,49 @@ import fr.unice.miage.projetpa.plugins.graphique.RobotColorRed;
  */
 public class App {
 
-	private Repository repository;
+	public static int arenaSize = 10;
+	
 	private JFrame frame;
-	private AppPanel contentPane;
+	private Grille grille;
 	private ArrayList<Robot> robots;
-	private Random rnd = new Random();
-
+	
 	public App(Repository repository, ArrayList<Robot> robots) {
-		this.repository = repository;
 		this.robots = robots;
 	}
 
-	public void showFrame() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
+	public void showFrame() throws Throwable {
 		if (frame == null) {
 			frame = new JFrame("Robot Plugins War");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setBounds(100, 100, 800, 800);
+			grille = new Grille(arenaSize, arenaSize);
+			grille.setBorder(new EmptyBorder(5, 5, 5, 5));
 			for (Robot r : robots) {
-				setRobotColor(r);
+				instanciateRobots(r);
 			}
-			contentPane = new AppPanel(robots);
-			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			frame.setContentPane(contentPane);
+			frame.setContentPane(grille);
 		}
 		frame.setVisible(true);
 	}
 	
-	public void start() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public void start() throws Throwable {
 		int robotNumber = 0;
 		while(!someoneIsDead()) {
-			move(robots.get(robotNumber));
-			if(robotNumber == 0) { 
-				attaque(robots.get(0), robots.get(1)); 
+			Thread.sleep(100);
+			if(robots.get(robotNumber).getEnergy() > 5) {
+				move(robots.get(robotNumber));
+				robots.get(robotNumber).setEnergy(robots.get(robotNumber).getEnergy() - 5);
 			} else {
-				attaque(robots.get(1), robots.get(0)); 
+				rechargeEnergy(robots.get(robotNumber));
+			}
+			if(robotNumber == 0) { 
+				if(!attaque(robots.get(0), robots.get(1))) {
+					rechargeEnergy(robots.get(0));
+				}
+			} else {
+				if(!attaque(robots.get(1), robots.get(0))) {
+					rechargeEnergy(robots.get(1));
+				}
 			}
 			if(robotNumber == 0) { 
 				robotNumber++;
@@ -71,16 +70,36 @@ public class App {
 		}
 	}
 	
-	public void attaque(Robot attaquant, Robot receveur) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public void rechargeEnergy(Robot robot) {
+		System.out.println(robot.getName() + "(" + robot.getEnergy() + ") se recharge\n");
+		robot.setEnergy(100);
+	}
+	
+	//TODO Rajouter des attaque à longue distance (distance >= 2)
+	public boolean attaque(Robot attaquant, Robot receveur) throws Throwable {
 		Object attaque = null;
+		boolean hasEnoughtEnergy = true;
+		int distance = grille.getDistance(grille.getCell(attaquant.getPosX(), attaquant.getPosY()), grille.getCell(receveur.getPosX(), receveur.getPosY()));
 		if(attaquant.getAtkType() == Robot.AtkType.COURTE) {
-			attaque = OutilReflection.construire(AttaqueCourte.class);
+			//Si atk courte & distance entre les robots égal à 1
+			if(distance <= 1 && distance != -1){
+				attaque = OutilReflection.construire(AttaqueCourte.class);
+			}
 		} else if(attaquant.getAtkType() == Robot.AtkType.LOURDE) {
-			attaque = OutilReflection.construire(AttaqueLourde.class);
+			//Si atk lourde & distance entre les robots égal à 1
+			if(distance <= 1 && distance != -1){
+				attaque = OutilReflection.construire(AttaqueLourde.class);
+			}
 		} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
 			attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
 		}
-		OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
+		if(distance != -1 && attaque != null) {
+			int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
+			if(attaquant.getEnergy() > energyUse) {
+				hasEnoughtEnergy = (Boolean) OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur);
+			}
+		}
+		return hasEnoughtEnergy;
 	}
 	
 	public boolean someoneIsDead() {
@@ -90,17 +109,45 @@ public class App {
 		return false;
 	}
 	
-	public void move(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+	public void move(Robot robot) throws Throwable {
 		int next_move = askNextMove(robot);
+		grille.getCell(robot.getPosX(), robot.getPosY()).setColor(Color.WHITE);
+		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(null);
+		//HAUT
 		if(next_move == 1) {
-			//TODO
+			if(robot.getPosY() >= 2) {
+				robot.setPosY(robot.getPosY()-1);
+			} else {
+				move(robot);
+				return;
+			}
+		//BAS
 		} else if(next_move == 2) {
-			//TODO
+			if(robot.getPosY() <= App.arenaSize-1) {
+				robot.setPosY(robot.getPosY()+1);
+			} else {
+				move(robot);
+				return;
+			}
+		//GAUCHE
 		} else if(next_move == 3) {
-			//TODO
+			if(robot.getPosX() >= 2) {
+				robot.setPosX(robot.getPosX()-1);
+			} else {
+				move(robot);
+				return;
+			}
+		//DROITE
 		} else {
-			//TODO
+			if(robot.getPosX() <= App.arenaSize-1) {
+				robot.setPosX(robot.getPosX()+1);
+			} else {
+				move(robot);
+				return;
+			}
 		}
+		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(robot);
+		grille.update();
 	}
 	
 	public int askNextMove(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -112,67 +159,15 @@ public class App {
 		return value;
 	}
 
-	private void setRobotColor(Robot robot) {
-		List<Class<?>> classes = this.repository.load();
-		for (Class<?> classe : classes) {
-			// On recupere la liste des methodes definies
-			Method[] methods = classe.getDeclaredMethods();
-			for (Method m : methods) {
-				Parameter[] parameters = m.getParameters();
-				int modifiers = m.getModifiers();
-				// On verifie si la methode est publique, statique et sans parametres
-				if (parameters.length == 0 && Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers)) {
-					// Pour chaque methode, on recupere ses annotations
-					Annotation[] annotations = m.getAnnotations();
-					int memo_random = -1;
-					for (Annotation a : annotations) {
-						int random_value = rnd.nextInt(4) + 1;
-						while (memo_random == random_value) {
-							random_value = rnd.nextInt(4) + 1;
-						}
-						/*switch (random_value) {
-						case 1:
-							if (a.annotationType().getSimpleName().equals("RobotColorBlack")) {
-								RobotColorBlack robot_color = m.getAnnotation(RobotColorBlack.class);
-								int r = robot_color.colorR();
-								int g = robot_color.colorG();
-								int b = robot_color.colorB();
-								robot.setColor(new Color(r, g, b));
-							}
-							break;
-						case 2:
-							if (a.annotationType().getSimpleName().equals("RobotColorRed")) {
-								RobotColorRed robot_color = m.getAnnotation(RobotColorRed.class);
-								int r = robot_color.colorR();
-								int g = robot_color.colorG();
-								int b = robot_color.colorB();
-								robot.setColor(new Color(r, g, b));
-							}
-							break;
-						case 3:
-							if (a.annotationType().getSimpleName().equals("RobotColorGreen")) {
-								RobotColorGreen robot_color = m.getAnnotation(RobotColorGreen.class);
-								int r = robot_color.colorR();
-								int g = robot_color.colorG();
-								int b = robot_color.colorB();
-								robot.setColor(new Color(r, g, b));
-							}
-							break;
-						case 4:
-							if (a.annotationType().getSimpleName().equals("RobotColorBlue")) {
-								RobotColorBlue robot_color = m.getAnnotation(RobotColorBlue.class);
-								int r = robot_color.colorR();
-								int g = robot_color.colorG();
-								int b = robot_color.colorB();
-								robot.setColor(new Color(r, g, b));
-							}
-							break;
-						}*/
-						memo_random = random_value;
-					}
-				}
-			}
-		}
+	private void instanciateRobots(Robot robot) throws Throwable {
+		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(robot);
+		Object robotColor = OutilReflection.construire(RobotColor.class);
+		Random rand = new Random();
+		float r = rand.nextFloat();
+		float g = rand.nextFloat();
+		float b = rand.nextFloat();
+		OutilReflection.invokeMethod(robotColor, "setColor", robot, new Color(r, g, b));
+		grille.update();
 	}
 
 }

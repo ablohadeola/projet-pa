@@ -4,19 +4,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import fr.unice.miage.projetpa.plugins.core.Plugin;
 
 public class OutilReflection {
 
-	public static Object invokeMethod(Object pluginName, String name, Object cible, Object... args) throws InvocationTargetException, IllegalAccessException {
+	public static Object invokeMethod(Object pluginName, String methodeName, Object cible, Object... args) throws InvocationTargetException, IllegalAccessException {
         Method[] methods = pluginName.getClass().getMethods();
         for(Method method : methods) {
             for(Annotation annotation : method.getAnnotations()){
                 Class<? extends Annotation> pluginInfos = annotation.annotationType();
                 for (Method mt : pluginInfos.getDeclaredMethods()) {
-                    if(mt.invoke(annotation).equals(name)){
+                    if(mt.invoke(annotation).equals(methodeName)){
  
 //                        if(args.length > 0)
 //                            System.out.println("Invoke " + name + " | with : "+ Arrays.toString(args));
@@ -40,14 +37,14 @@ public class OutilReflection {
         return null;
     }
 	
-	public static Object construire(Class pluginClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor constructor = pluginClass.getDeclaredConstructor();
+	public static Object construire(Class<?> pluginClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<?> constructor = pluginClass.getDeclaredConstructor();
         return constructor.newInstance();
     }
 
     /** creer un objet avec nom de classe */
     public static Object construire(String className) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException{
-        Class c = null; 
+        Class<?> c = null; 
         try {
             c = Class.forName(className); 
         } catch(ClassNotFoundException cnfe) {
