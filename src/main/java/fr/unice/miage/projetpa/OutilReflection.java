@@ -44,5 +44,17 @@ public class OutilReflection {
         Constructor constructor = pluginClass.getDeclaredConstructor();
         return constructor.newInstance();
     }
+
+    /** creer un objet avec nom de classe */
+    public static Object construire(String className) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException{
+        Class c = null; 
+        try {
+            c = Class.forName(className); 
+        } catch(ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        }
+        if(c == null) return null;
+        return construire(c);
+    }
 	
 }

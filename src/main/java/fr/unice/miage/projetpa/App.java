@@ -60,6 +60,8 @@ public class App {
 		//TODO Wait grille pour déplacement
 //		attaqueRobot(robots.get(0), robots.get(1));
 		//TODO @Melvin -> Adapter le code à l'outil reflection
+		Object rectPlugin = OutilReflection.construire("fr.unice.miage.projetpa.plugins.graphique.RobotRectangle");
+		OutilReflection.invokeMethod(rectPlugin, "setTaille", robots.get(0));
 		Object attaque = OutilReflection.construire(AttaqueCourte.class);
 		OutilReflection.invokeMethod(attaque, "attaque", robots.get(0), robots.get(1));
 		Object attaqueLourde = OutilReflection.construire(AttaqueLourde.class);
