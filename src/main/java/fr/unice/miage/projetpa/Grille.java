@@ -175,9 +175,75 @@ public class Grille implements Cloneable {
 		            }
 		     
 		     
+		     public boolean equals (Object op2) {
+		    	   	
+		         // Controler la validite du parametre
+		         //
+		         if (op2 == null) return false;
+		         
+		         // Transtyper la valeur du second parametre
+		         //
+		         Cellule c= (Cellule)op2;
+		         
+		         // Controler l'egalite des positions
+		         //
+		         if (ligne != c.ligne) return false;
+		         if (colonne != c.colonne) return false;
+		         
+		         // Controler la valeur du symbole
+		         //
+		         if (symbole != null && c.symbole != null) { 
+		            if(!symbole.equals(c.symbole)) return false;
+		         }
+		         else {
+		            if (symbole == null && c.symbole != null) return false;
+		            if (symbole != null && c.symbole == null) return false;	
+		         }
+		         
+		         // Controler la valeur de la couleur
+		         //
+		         if (couleur != null && c.couleur != null) { 
+		            if(!couleur.equals(c.couleur)) return false;
+		         }
+		         else {
+		            if (couleur == null && c.couleur != null) return false;
+		            if (couleur != null && c.couleur == null) return false;	
+		         }
+		         
+		         // Controler la valeur de la marque
+		         //
+		         if (marque != null && c.marque != null) { 
+		            if(!marque.equals(c.marque)) return false;
+		         }
+		         else {
+		            if (marque == null && c.marque != null) return false;
+		            if (marque != null && c.marque == null) return false;	
+		         }
+		         
+		         // Controler la valeur du poids
+		         //
+		         if (poids != c.poids) return false;
+		   	  
+		         return true;
+		      }
+		   
 		      
 		      
+		     
+		     public String toString () {
+		    	   	
+		         return "("+ ligne+ ", "+colonne+")";
+		      }
 		      
+		     
+		     
+		     
+		     
+		     
+		     
+		     
+		     
+		     
 		   }
 	
 	
