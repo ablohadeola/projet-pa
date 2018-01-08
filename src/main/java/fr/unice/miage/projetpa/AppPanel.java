@@ -17,18 +17,18 @@ public class AppPanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-        for(Robot robot : listRobots) {
-            paint(g, robot);
-        }
+//        for(Robot robot : listRobots) {
+//            paint(g, robot);
+//        }
     }
 
     public void paint(Graphics g, Robot robot)
     {
-    	Color c = Color.black;
-    	g.drawRect(robot.getPosX(), robot.getPosY(), 50, 50); 
-    	c = robot.getColor();
-    	g.setColor(c);
-    	g.fillRect(robot.getPosX(), robot.getPosY(), 50, 50); 
+//    	Color c = Color.black;
+//    	g.drawRect(robot.getPosX(), robot.getPosY(), 50, 50); 
+//    	c = robot.getColor();
+//    	g.setColor(c);
+//    	g.fillRect(robot.getPosX(), robot.getPosY(), 50, 50); 
     }
 
 }

@@ -13,7 +13,6 @@ public class RandomMove {
 	public int nextMove() {
 		Random rnd = new Random();
         int value = rnd.nextInt(4) + 1;
-        System.out.println("nextMove : " + value);
         return value;
 	}
 }

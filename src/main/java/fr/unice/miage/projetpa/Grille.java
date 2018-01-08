@@ -1,65 +1,85 @@
 package fr.unice.miage.projetpa;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Color;
+import java.awt.GridLayout;
 
-/**
- *
- * @author Samir Zennani
- * @version 1.1.0
- */
+import javax.swing.JPanel;
 
-public class Grille implements Cloneable {
+import fr.unice.miage.projetpa.Grille_old.Cellule;
 
-	private Cellule[][] matrice;
-
+public class Grille extends JPanel {
+	
+	private Cell[][] matrice;
+	
 	/**
 	 * Constructeur par defaut d'une grille 10 par 10
 	 */
-
 	public Grille() {
-
-		matrice = new Cellule[10][10];
-
-		for (int i = 0; i < 10; i++)
+		GridLayout gridLayout = new GridLayout(10, 10);
+		this.setLayout(gridLayout);
+		matrice = new Cell[10][10];
+		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-
-				try {
-					matrice[i][j] = new Cellule(i + 1, j + 1);
-				} catch (Throwable e) {
-					return;
-				}
+				Cell cell = new Cell();
+				cell.setColor(Color.WHITE);
+				matrice[j][i] = cell;
+				this.add(cell);
 			}
+		}
 	}
-
-	/**
-	 * Constructeur normal Construit une grille avec une taille personalisée
-	 */
-
+	
 	public Grille(int nbLignes, int nbColonnes) throws Throwable {
-
 		// Controler la validite des parametres
-		//
 		if (nbLignes < 5)
 			throw new Throwable("-2.1");
 		if (nbColonnes < 5)
 			throw new Throwable("-2.2");
-
 		// Initialiser l'attribut
-		//
-		matrice = new Cellule[nbLignes][nbColonnes];
-
-		for (int i = 0; i < nbLignes; i++)
+		GridLayout gridLayout = new GridLayout(10, 10);
+		this.setLayout(gridLayout);
+		matrice = new Cell[nbLignes][nbColonnes];
+		for (int i = 0; i < nbLignes; i++) {
 			for (int j = 0; j < nbColonnes; j++) {
-
-				try {
-					matrice[i][j] = new Cellule(i + 1, j + 1);
-				} catch (Throwable e) {
-					return;
+				Cell cell = new Cell();
+				cell.setColor(Color.WHITE);
+				matrice[j][i] = cell;
+				this.add(cell);
+			}
+		}
+	}
+	
+	public void update() {
+		for (int i = 0; i < getNbLignes(); i++) {
+			for (int j = 0; j < getNbColonnes(); j++) {
+				Cell cell = matrice[j][i];
+				if(cell.hasRobotOnIt()){
+					matrice[j][i].setColor(cell.getRobot().getColor());
+					this.revalidate();
+					this.repaint();
 				}
 			}
+		}
 	}
-
+	
+	public boolean isOnSameLineOrColumn(Cell c1, Cell c2) {
+		if(c1.getX() == c2.getX() || c1.getY() == c2.getY()) {
+			return true;
+		} else return false;
+	}
+	
+	public int getDistance(Cell c1, Cell c2) {
+		if(isOnSameLineOrColumn(c1, c2)) {
+			if(c1.getX() == c2.getX()) {
+				return Math.abs(c1.getX() - c2.getX());
+			} else {
+				if(c1.getY() == c2.getY()) {
+					return Math.abs(c1.getY() - c2.getY());
+				}
+			}
+		} 
+		return -1;
+	}
+	
 	public int getNbLignes() {
 		return matrice.length;
 	}
@@ -67,466 +87,14 @@ public class Grille implements Cloneable {
 	public int getNbColonnes() {
 		return matrice[0].length;
 	}
-
-	public Cellule getCellule(int ligne, int colonne) throws Throwable {
-
+	
+	public Cell getCell(int ligne, int colonne) throws Throwable {
 		// Controler la validite des parametres
-		//
 		if (ligne < 1 || ligne > getNbLignes())
 			throw new Throwable("-2.1");
 		if (colonne < 1 || colonne > getNbColonnes())
 			throw new Throwable("-2.2");
-
 		return matrice[ligne - 1][colonne - 1];
-	}
-
-	public Object getCouleur(int ligne, int colonne) throws Throwable {
-
-		// Controler la validite des parametres
-		//
-		if (ligne < 1 || ligne > getNbLignes())
-			throw new Throwable("-2.1");
-		if (colonne < 1 || colonne > getNbColonnes())
-			throw new Throwable("-2.2");
-
-		return matrice[ligne - 1][colonne - 1].couleur;
-	}
-
-	public void setCouleur(int ligne, int colonne, Object couleur) throws Throwable {
-
-		// Controler la validite du dernier parametre
-		//
-		if (couleur == null)
-			throw new Throwable("-2.3");
-
-		// Obtenir la cellule cible
-		//
-		Cellule c = getCellule(ligne, colonne);
-
-		// Modifier la cellule cible
-		//
-		c.setCouleur(couleur);
-	}
-
-	public void resetCouleur(int ligne, int colonne) throws Throwable {
-
-		// Obtenir la cellule cible
-		//
-		Cellule c = getCellule(ligne, colonne);
-
-		// Modifier la cellule cible
-		//
-		c.resetCouleur();
-	}
-
-	public void colorer(int ligne, int colonne, Object couleur) throws Throwable {
-		if (couleur == null || colonne < 1 || ligne < 1)
-			throw new Throwable("-2.3");
-		if (this.getCellule(ligne, colonne) == null)
-			this.getCellule(ligne, colonne).setCouleur(couleur);
-
-	}
-
-	// -------------------------- *** Classe interne Cellule
-
-	class Cellule {
-		private final int ligne;
-		private final int colonne;
-
-		private Object couleur;
-
-		public Cellule() {
-			ligne = 1;
-			colonne = 1;
-		}
-
-		public Cellule(int ligne, int colonne) throws Throwable {
-			// Controler la validite des parametres
-			//
-			if (ligne < 1 || ligne > getNbLignes())
-				throw new Throwable("-2.1");
-			if (colonne < 1 || colonne > getNbColonnes())
-				throw new Throwable("-2.2");
-
-			// Memoriser la valeur des attributs
-			//
-			this.ligne = ligne;
-			this.colonne = colonne;
-		}
-
-		// -- Methodes getter et setter
-		/**
-		 *
-		 * @return
-		 */
-
-		public int getLigne() {
-			return ligne;
-		}
-
-		/**
-		 *
-		 * @return
-		 */
-		public int getColonne() {
-			return colonne;
-		}
-
-		/**
-		 *
-		 * @return
-		 */
-		public Object getCouleur() {
-			return couleur;
-		}
-
-		// --- Accesseurs de modification
-
-		public void setCouleur(Object couleur) {
-			this.couleur = couleur;
-		}
-
-		public void resetCouleur() {
-			couleur = null;
-		}
-
-		// --- Methodes heritees de Object
-
-		public Object clone() {
-
-			try {
-				Cellule cel = new Cellule();
-				cel.setCouleur(this.getCouleur());
-
-				return cel;
-			} catch (Throwable e) {
-				return null;
-			}
-		}
-
-		public boolean equals(Object op2) {
-
-			// Controler la validite du parametre
-			//
-			if (op2 == null)
-				return false;
-
-			// Transtyper la valeur du second parametre
-			//
-			Cellule c = (Cellule) op2;
-
-			// Controler l'egalite des positions
-			//
-			if (ligne != c.ligne)
-				return false;
-			if (colonne != c.colonne)
-				return false;
-
-			// Controler la valeur de la couleur
-			//
-			if (couleur != null && c.couleur != null) {
-				if (!couleur.equals(c.couleur))
-					return false;
-			} else {
-				if (couleur == null && c.couleur != null)
-					return false;
-				if (couleur != null && c.couleur == null)
-					return false;
-			}
-
-			// Controler la valeur du poids
-			//
-
-			return true;
-		}
-
-		public String toString() {
-
-			return "(" + ligne + ", " + colonne + ")";
-		}
-
-		// Methode pour retourner cellule voisine
-
-		public int nbVoisines() {
-
-			// Traiter les cas particuliers des quatre coins
-			//
-			if (coin())
-				return 3;
-
-			// Traiter les cas particuliers des quatre bordures
-			//
-			if (bordure())
-				return 5;
-
-			// Traiter le cas general
-			//
-			return 8;
-		}
-
-		// --- Methode bordureNord
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean bordureNord() {
-			return getLigne() == 1;
-		}
-
-		// --- Methode bordureEst
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean bordureEst() {
-			return getColonne() == getNbColonnes();
-		}
-
-		// --- Methode bordureSud
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean bordureSud() {
-			return getLigne() == getNbLignes();
-		}
-
-		// --- Methode bordureOuest
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean bordureOuest() {
-			return getColonne() == 1;
-		}
-
-		// --- Methode bordure
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean bordure() {
-
-			if (bordureNord())
-				return true;
-			if (bordureEst())
-				return true;
-			if (bordureSud())
-				return true;
-			if (bordureOuest())
-				return true;
-
-			return false;
-		}
-
-		// --- Methode coinNordOuest
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean coinNordOuest() {
-			return bordureNord() && bordureOuest();
-		}
-
-		// --- Methode coinNordEst
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean coinNordEst() {
-			return bordureNord() && bordureEst();
-		}
-
-		// --- Methode coinSudEst
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean coinSudEst() {
-			return bordureSud() && bordureEst();
-		}
-
-		// --- Methode coinSudOuest
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean coinSudOuest() {
-			return bordureSud() && bordureOuest();
-		}
-
-		// --- Methode coin
-
-		/**
-		 *
-		 * @return
-		 */
-
-		public boolean coin() {
-
-			if (coinNordOuest())
-				return true;
-			if (coinNordEst())
-				return true;
-			if (coinSudEst())
-				return true;
-			if (coinSudOuest())
-				return true;
-
-			return false;
-		}
-
-		public Cellule[] voisines() throws Throwable {
-
-			// Allouer le tableau de retour
-			//
-			Cellule[] resultat = new Cellule[nbVoisines()];
-
-			// Restituer le resultat pour le cas particulier du coin NO
-			//
-			if (coinNordOuest()) {
-				resultat[0] = getCellule(1, 2);
-				resultat[1] = getCellule(2, 2);
-				resultat[2] = getCellule(2, 1);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour le cas particulier du coin NE
-			//
-			if (coinNordEst()) {
-				resultat[0] = getCellule(2, colonne);
-				resultat[1] = getCellule(2, colonne - 1);
-				resultat[2] = getCellule(1, colonne - 1);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour le cas particulier du coin SE
-			//
-			if (coinSudEst()) {
-				resultat[0] = getCellule(ligne, colonne - 1);
-				resultat[1] = getCellule(ligne - 1, colonne - 1);
-				resultat[2] = getCellule(ligne - 1, colonne);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour le cas particulier du coin SO
-			//
-			if (coinSudOuest()) {
-				resultat[0] = getCellule(ligne - 1, 1);
-				resultat[1] = getCellule(ligne - 1, 2);
-				resultat[2] = getCellule(ligne, 2);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour la bordure Nord
-			//
-			if (bordureNord()) {
-				resultat[0] = getCellule(ligne, colonne + 1);
-				resultat[1] = getCellule(ligne + 1, colonne + 1);
-				resultat[2] = getCellule(ligne + 1, colonne);
-				resultat[3] = getCellule(ligne + 1, colonne - 1);
-				resultat[4] = getCellule(ligne, colonne - 1);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour la bordure Est
-			//
-			if (bordureEst()) {
-				resultat[0] = getCellule(ligne + 1, colonne);
-				resultat[1] = getCellule(ligne + 1, colonne - 1);
-				resultat[2] = getCellule(ligne, colonne - 1);
-				resultat[3] = getCellule(ligne - 1, colonne - 1);
-				resultat[4] = getCellule(ligne - 1, colonne);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour la bordure Sud
-			//
-			if (bordureSud()) {
-				resultat[0] = getCellule(ligne, colonne - 1);
-				resultat[1] = getCellule(ligne - 1, colonne - 1);
-				resultat[2] = getCellule(ligne - 1, colonne);
-				resultat[3] = getCellule(ligne - 1, colonne + 1);
-				resultat[4] = getCellule(ligne, colonne + 1);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour la bordure Ouest
-			//
-			if (bordureOuest()) {
-				resultat[0] = getCellule(ligne - 1, 1);
-				resultat[1] = getCellule(ligne - 1, 2);
-				resultat[2] = getCellule(ligne, 2);
-				resultat[3] = getCellule(ligne + 1, 2);
-				resultat[4] = getCellule(ligne + 1, 1);
-
-				return resultat;
-			}
-
-			// Restituer le resultat pour le cas general
-			//
-			resultat[0] = getCellule(ligne - 1, colonne - 1);
-			resultat[1] = getCellule(ligne - 1, colonne);
-			resultat[2] = getCellule(ligne - 1, colonne + 1);
-			resultat[3] = getCellule(ligne, colonne + 1);
-			resultat[4] = getCellule(ligne + 1, colonne + 1);
-			resultat[5] = getCellule(ligne + 1, colonne);
-			resultat[6] = getCellule(ligne + 1, colonne - 1);
-			resultat[7] = getCellule(ligne, colonne - 1);
-
-			return resultat;
-		}
-
-		// --- Methode distance
-
-		/**
-		 *
-		 * @param cible
-		 * @return
-		 * @throws Throwable
-		 */
-
-		public int distance(Cellule cible) throws Throwable {
-
-			// Controler la validite des parametres
-			//
-			if (cible == null)
-				throw new Throwable("-2.1");
-
-			int ligneCible = cible.ligne;
-			int colonneCible = cible.colonne;
-
-			int x = Math.abs(ligne - ligneCible);
-			int y = Math.abs(colonne - colonneCible);
-
-			return Math.max(x, y);
-		}
-
 	}
 
 }

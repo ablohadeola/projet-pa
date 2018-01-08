@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 
 import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
 
-public class Robot extends JComponent{
+public class Robot{
 	
 	private String name;
 	private int life = 100;
@@ -26,8 +26,8 @@ public class Robot extends JComponent{
 
 	public Robot(String name, DepType depType, AtkType atkType) {
 		this.name = name;
-		this.posX = rnd.nextInt(700)+50;
-		this.posY = rnd.nextInt(700)+50;
+		this.posX = rnd.nextInt(10)+1;
+		this.posY = rnd.nextInt(10)+1;
 		this.depType = depType;
 		this.atkType = atkType;
 	}
