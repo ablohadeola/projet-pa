@@ -58,9 +58,8 @@ public class App {
 		int value = (Integer) OutilReflection.invokeMethod(moveInstance, Plugin.Type.Deplacement, null);
 		//TODO Wait grille pour déplacement
 //		attaqueRobot(robots.get(0), robots.get(1));
-		//TODO @Melvin -> Adapter le code à l'outil reflection
-//		Object attaque = OutilReflection.construire(AttaqueCourte.class);
-//		OutilReflection.invokeMethod(attaque, Plugin.Type.Deplacement, robots.get(0), robots.get(1));
+		Object attaque = OutilReflection.construire(AttaqueCourte.class);
+		OutilReflection.invokeMethod(attaque, Plugin.Type.Attaque, robots.get(0), robots.get(1));
 	}
 
 	private void setRobotColor(Robot robot) {
@@ -120,60 +119,6 @@ public class App {
 							break;
 						}
 						memo_random = random_value;
-					}
-				}
-			}
-		}
-	}
-
-	private void attaqueRobot(Robot em, Robot rec) {
-		List<Class<?>> classes = this.repository.load();
-		for (Class<?> classe : classes) {
-			// On recupere la liste des methodes definies
-			Method[] methods = classe.getDeclaredMethods();
-			for (Method m : methods) {
-				Parameter[] parameters = m.getParameters();
-				int modifiers = m.getModifiers();
-				// On verifie si la methode est publique, statique et sans parametres
-				if (parameters.length == 2 && Modifier.isPublic(modifiers)) {
-					// Pour chaque methode, on recupere ses annotations
-					Annotation[] annotations = m.getAnnotations();
-					for (Annotation a : annotations) {
-						if (a.annotationType().getSimpleName().equals("Plugin")) {
-							Plugin plugin = m.getAnnotation(Plugin.class);
-							if (plugin.Type() == Plugin.Type.Attaque) {
-								String name = plugin.Nom();
-								try {
-									Class<?> cl = Class.forName(name);
-									Class[] paramTypes = new Class[] { Robot.class, Robot.class };
-									Method met;
-									try {
-										met = cl.getMethod("attaque", paramTypes);
-										try {
-											try {
-												met.invoke(cl.newInstance(), new Robot[] { em, rec });
-												return;
-											} catch (InstantiationException e) {
-												e.printStackTrace();
-											}
-										} catch (IllegalAccessException e) {
-											e.printStackTrace();
-										} catch (IllegalArgumentException e) {
-											e.printStackTrace();
-										} catch (InvocationTargetException e) {
-											e.printStackTrace();
-										}
-									} catch (NoSuchMethodException e) {
-										e.printStackTrace();
-									} catch (SecurityException e) {
-										e.printStackTrace();
-									}
-
-								} catch (ClassNotFoundException e) {
-									e.printStackTrace();
-								}
-							}
-						}
 					}
 				}
 			}
