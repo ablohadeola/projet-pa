@@ -65,6 +65,8 @@ public class App {
 			attaqueRobot(robots.get(0), robots.get(1));
 			System.out.println("Attaque 2");
 			attaqueRobot(robots.get(0), robots.get(1));
+			System.out.println("Attaque 3");
+			attaqueRobot(robots.get(0), robots.get(1));
 			contentPane = new AppPanel(robots);
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			frame.setContentPane(contentPane);
