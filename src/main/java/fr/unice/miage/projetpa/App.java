@@ -103,6 +103,8 @@ public class App {
 				if(distance <= 1){
 					attaque = OutilReflection.construire(AttaqueLourde.class);
 				}
+			} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
+				attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
 			}
 			if(attaque != null) {
 				int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);

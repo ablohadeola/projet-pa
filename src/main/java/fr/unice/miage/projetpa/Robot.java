@@ -3,19 +3,30 @@ package fr.unice.miage.projetpa;
 import java.awt.Color;
 import java.util.Random;
 
-public class Robot{
+import javax.swing.JComponent;
+
+public class Robot extends JComponent{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -426502312760795279L;
+
+	public static final int INITIAL_LIFE = 100;
 	
 	private String name;
-	private int life = 100;
+	private int life = INITIAL_LIFE;
 	private int energy = 100;
 	private Color color;
 	private int posX;
 	private int posY;
+	private int depX = 0;
+	private int depY = 0;
 	private DepType depType;
 	private AtkType atkType;
 	
 	public static enum DepType { ALEATOIRE, INTELLIGENT};
-	public static enum AtkType { COURTE, LOURDE};
+	public static enum AtkType { COURTE, LOURDE, ABSORBE};
 	
 	private Random rnd = new Random();
 
@@ -86,6 +97,22 @@ public class Robot{
 
 	public void setAtkType(AtkType atkType) {
 		this.atkType = atkType;
+	}
+
+	public int getDepX() {
+		return depX;
+	}
+
+	public void setDepX(int x) {
+		depX = x;
+	}
+
+	public int getDepY() {
+		return depY;
+	}
+
+	public void setDepY(int y) {
+		depY = y;
 	}
 	
 }
