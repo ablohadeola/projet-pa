@@ -32,7 +32,7 @@ public class AttaqueAbsorbeVieTest {
 		assertEquals(100, rob1.getEnergy());
 		assertEquals(100, rob2.getEnergy());
 		
-		atk.attaque(rob1,rob2);
+		assertTrue(atk.attaque(rob1,rob2));
 		
 		assertEquals(115, rob1.getLife());
 		assertEquals(85, rob2.getLife());
@@ -41,7 +41,7 @@ public class AttaqueAbsorbeVieTest {
 		
 		rob1.setEnergy(2);
 		
-		//assertEquals(false,atk.attaque(rob1,rob2));
+		assertEquals(false,atk.attaque(rob1,rob2));
 		assertEquals(2, rob1.getEnergy());
 	}
 
