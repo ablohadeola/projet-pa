@@ -1,16 +1,12 @@
 package fr.unice.miage.projetpa;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.GridLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -271,6 +267,7 @@ public class App {
 				return;
 			}
 		}
+		hub.get(robots.indexOf(robot)).update();
 		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(robot); //Indique a la grille qu'il n'y un robot sur cette case
 		grille.update(); //Rafraichie l'affichage de la grille
 	}
