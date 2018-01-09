@@ -51,20 +51,6 @@ public class Grille extends JPanel {
 		} else return false;
 	}
 	
-	//Retourne la distance entre deux cellules positionnees sur une meme ligne ou colonne
-	public int getDistance(Cell c1, Cell c2) {
-		if(isOnSameLineOrColumn(c1, c2)) {
-			if(c1.getX() == c2.getX()) {
-				return Math.abs(c1.getY() - c2.getY());
-			} else {
-				if(c1.getY() == c2.getY()) {
-					return Math.abs(c1.getX() - c2.getX());
-				}
-			}
-		} 
-		return -1;
-	}
-	
 	public int getNbLignes() {
 		return matrice.length;
 	}

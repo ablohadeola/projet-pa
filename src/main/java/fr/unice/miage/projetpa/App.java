@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
+import fr.unice.miage.projetpa.plugins.attaque.AttaqueAbsorbeVie;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueCourte;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueDistance;
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueLourde;
@@ -49,7 +50,7 @@ public class App {
 	//Demarrage de la bataille
 	public void start() throws Throwable {
 		int robotNumber = 0; //Permet de switch le tour de jeu (uniquement pour 2 robots pour l'instant)
-		while(!someoneIsDead()) { //Tant que aucun robot n'est mort on continue
+		while(!isEndGame()) { //Tant que aucun robot n'est mort on continue
 			Thread.sleep(100); //Attend 100ms
 			if(robots.get(robotNumber).getEnergy() > 5) { //Se deplacer coute 5, donc si energy < 5 on recharge, sinon on se deplace
 				move(robots.get(robotNumber));
@@ -57,21 +58,67 @@ public class App {
 			} else {
 				rechargeEnergy(robots.get(robotNumber));
 			}
-			if(robotNumber == 0) { 
-				if(!attaque(robots.get(0), robots.get(1))) { //Si attaque return false c'est que le robot n'a pas assez d'energie pour l'effectuer
+			Robot recepteur = checkRobotItCanAttack(robots.get(robotNumber));
+			if(recepteur != null) {
+				if(!attaque(robots.get(robotNumber), recepteur)) { //Si attaque return false c'est que le robot n'a pas assez d'energie pour l'effectuer
 					rechargeEnergy(robots.get(0));
 				}
-			} else {
-				if(!attaque(robots.get(1), robots.get(0))) { //Si attaque return false c'est que le robot n'a pas assez d'energie pour l'effectuer
-					rechargeEnergy(robots.get(1));
+				if(recepteur.getLife() <= 0) {
+					robots.remove(recepteur);
 				}
 			}
-			if(robotNumber == 0) { //Switch de robot
+			if(robotNumber < robots.size()-1) {
 				robotNumber++;
 			} else {
-				robotNumber--;
+				robotNumber = 0;
 			}
 		}
+	}
+	
+	public int getDistanceBetween(Robot r1, Robot r2) {
+		int distance = -1;
+		if(r1.getPosX() == r2.getPosX()) {
+			distance = Math.abs(r1.getPosY() - r2.getPosY());
+		} else if(r1.getPosY() == r2.getPosY()) {
+			distance = Math.abs(r1.getPosX() - r2.getPosX());
+		}
+		return distance;
+	}
+	
+	public Robot checkRobotItCanAttack(Robot robot) throws Throwable {
+		Cell[] cells = getRobotCellPosition();
+		for(int i=0; i<cells.length; i++) {
+			if(i<robots.size()) {
+				Robot recepteur = cells[i].getRobot();
+				if(!robot.getName().equals(recepteur.getName())) {
+					int distance = getDistanceBetween(robot, recepteur);
+					if(distance != -1) {
+						Object o = OutilReflection.construire(AttaqueCourte.class);
+						int robotAtkDistance = (Integer) OutilReflection.invokeMethod(o, "getDistanceAtk", null);
+						if(robot.getAtkType() != Robot.AtkType.DISTANCE && distance <= robotAtkDistance) {
+							return recepteur;
+						} else if(robot.getAtkType() == Robot.AtkType.DISTANCE && distance >= robotAtkDistance) {
+							return recepteur;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Cell[] getRobotCellPosition() throws Throwable {
+		Cell[] cells = new Cell[robots.size()];
+		int compteur = 0;
+		for (int i = 1; i < App.arenaSize+1; i++) {
+			for (int j = 1; j < App.arenaSize+1; j++) {
+				if(grille.getCell(i, j).hasRobotOnIt()) {
+					cells[compteur] = grille.getCell(i, j);
+					compteur++;
+				}
+			}
+		}
+		return cells;
 	}
 	
 	/**
@@ -92,23 +139,29 @@ public class App {
 		/*Calcul de la distance entre les deux robots
 		 * = -1 s'ils sont pas sur une meme ligne ou colonne
 		 */
-		int distance = grille.getDistance(grille.getCell(attaquant.getPosX(), attaquant.getPosY()), grille.getCell(receveur.getPosX(), receveur.getPosY()));
+		int distance = getDistanceBetween(attaquant, receveur);
 		if(distance != -1) {
 			if(attaquant.getAtkType() == Robot.AtkType.COURTE) {
 				//Si atk courte & distance entre les robots égal à 1
-				if(distance <= 1){
+				Object o = OutilReflection.construire(AttaqueCourte.class);
+				int robotAtkDistance = (Integer) OutilReflection.invokeMethod(o, "getDistanceAtk", null);
+				if(distance <= robotAtkDistance){
 					attaque = OutilReflection.construire(AttaqueCourte.class);
 				}
 			} else if(attaquant.getAtkType() == Robot.AtkType.LOURDE) {
 				//Si atk lourde & distance entre les robots égal à 1
-				if(distance <= 1){
+				Object o = OutilReflection.construire(AttaqueLourde.class);
+				int robotAtkDistance = (Integer) OutilReflection.invokeMethod(o, "getDistanceAtk", null);
+				if(distance <= robotAtkDistance){
 					attaque = OutilReflection.construire(AttaqueLourde.class);
 				}
 			} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
-				attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
+				attaque = OutilReflection.construire(AttaqueAbsorbeVie.class);
 			} else if(attaquant.getAtkType() == Robot.AtkType.DISTANCE) {
+				Object o = OutilReflection.construire(AttaqueCourte.class);
+				int robotAtkDistance = (Integer) OutilReflection.invokeMethod(o, "getDistanceAtk", null);
 				//Si atk a distance & distance entre les robots supérieur à un tier de l'arene
-				if(distance >= Math.abs(Math.ceil(arenaSize - (arenaSize / 3)))){
+				if(distance >= robotAtkDistance){
 					attaque = OutilReflection.construire(AttaqueDistance.class);
 				}
 			}
@@ -116,6 +169,11 @@ public class App {
 				int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
 				if(attaquant.getEnergy() > energyUse) {
 					hasEnoughtEnergy = (Boolean) OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur); //return false si pas assez d'energie pour effectuer l'attaque
+				}
+				if(receveur.getLife() <= 0) {
+					robots.remove(receveur);
+					grille.getCell(receveur.getPosX(), receveur.getPosY()).setRobot(null);
+					grille.getCell(receveur.getPosX(), receveur.getPosY()).setBackground(Color.WHITE);
 				}
 			}
 		}
@@ -132,6 +190,19 @@ public class App {
 		return false;
 	}
 	
+	public boolean isEndGame() {
+		int compteur = 0;
+		for(Robot r : robots) {
+			if(r.getLife() > 0) {
+				compteur++;
+			}
+		}
+		if(compteur == 1) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Permet a un robot de se deplacer
 	 */
@@ -141,7 +212,7 @@ public class App {
 		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(null); //Indique a la grille qu'il n'y a plus de robot sur cette case
 		//HAUT
 		if(next_move == 1) {
-			if(robot.getPosY() >= 2) {
+			if(robot.getPosY() >= 2 && !grille.getCell(robot.getPosX(), robot.getPosY()-1).hasRobotOnIt()) {
 				robot.setPosY(robot.getPosY()-1); 
 			} else {
 				move(robot);
@@ -149,7 +220,7 @@ public class App {
 			}
 		//BAS
 		} else if(next_move == 2) {
-			if(robot.getPosY() <= App.arenaSize-1) {
+			if(robot.getPosY() <= App.arenaSize-1 && !grille.getCell(robot.getPosX(), robot.getPosY()+1).hasRobotOnIt()) {
 				robot.setPosY(robot.getPosY()+1);
 			} else {
 				move(robot);
@@ -157,7 +228,7 @@ public class App {
 			}
 		//GAUCHE
 		} else if(next_move == 3) {
-			if(robot.getPosX() >= 2) {
+			if(robot.getPosX() >= 2 && !grille.getCell(robot.getPosX()-1, robot.getPosY()).hasRobotOnIt()) {
 				robot.setPosX(robot.getPosX()-1);
 			} else {
 				move(robot);
@@ -165,7 +236,7 @@ public class App {
 			}
 		//DROITE
 		} else {
-			if(robot.getPosX() <= App.arenaSize-1) {
+			if(robot.getPosX() <= App.arenaSize-1 && !grille.getCell(robot.getPosX()+1, robot.getPosY()).hasRobotOnIt()) {
 				robot.setPosX(robot.getPosX()+1);
 			} else {
 				move(robot);

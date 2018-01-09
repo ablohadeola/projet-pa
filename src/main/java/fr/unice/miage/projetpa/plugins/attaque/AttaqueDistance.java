@@ -1,5 +1,6 @@
 package fr.unice.miage.projetpa.plugins.attaque;
 
+import fr.unice.miage.projetpa.App;
 import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
@@ -15,6 +16,7 @@ public class AttaqueDistance {
 
 	private int degat = 2;
 	private int energyUse = 25;
+	private int distanceAtk = (int) Math.abs(Math.ceil(App.arenaSize - (App.arenaSize / 3)));
 
 	/**
 	 * Le robot emetteur attaque le robot recepteur avec une attaque a distance
@@ -41,5 +43,10 @@ public class AttaqueDistance {
 	@PluginInfos(name = "getEnergyUse", who = "Robot")
 	public int getEnergyUse() {
 		return energyUse;
+	}
+	
+	@PluginInfos(name = "getDistanceAtk", who = "Robot")
+	public int getDistanceAtk() {
+		return distanceAtk;
 	}
 }
