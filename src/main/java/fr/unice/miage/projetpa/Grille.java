@@ -5,6 +5,11 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
+import fr.unice.miage.projetpa.plugins.core.Plugin;
+import fr.unice.miage.projetpa.plugins.core.PluginInfos;
+import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
+
+@Plugin(Nom = "Grille", Type = Type.Graphique)
 public class Grille extends JPanel {
 	
 	/**
@@ -16,6 +21,7 @@ public class Grille extends JPanel {
 	/**
 	 * Constructeur d'une grille de taille App.arenaSize
 	 */
+	
 	public Grille() {
 		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
 		this.setLayout(gridLayout);
@@ -28,6 +34,11 @@ public class Grille extends JPanel {
 				this.add(cell);
 			}
 		}
+	}
+	
+	@PluginInfos(name = "constructor", who = "")
+	public Grille constructor() {
+		return new Grille();
 	}
 	
 	//Parcours toutes les cells afin de trouver l'emplacement des robots et d'affecter leurs couleurs aux cellules
@@ -60,11 +71,6 @@ public class Grille extends JPanel {
 	}
 	
 	public Cell getCell(int ligne, int colonne) throws Throwable {
-		// Controler la validite des parametres
-//		if (ligne < 1 || ligne > getNbLignes())
-//			throw new Throwable("-2.1");
-//		if (colonne < 1 || colonne > getNbColonnes())
-//			throw new Throwable("-2.2");
 		return matrice[ligne - 1][colonne - 1];
 	}
 

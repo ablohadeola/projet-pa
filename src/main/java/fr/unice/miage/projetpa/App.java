@@ -1,10 +1,18 @@
 package fr.unice.miage.projetpa;
 
+import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridLayout;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import fr.unice.miage.projetpa.plugins.attaque.AttaqueAbsorbeVie;
@@ -26,9 +34,14 @@ public class App {
 	private JFrame frame;
 	private Grille grille;
 	private ArrayList<Robot> robots;
+	private ArrayList<HUB> hub;
 	
-	public App(ArrayList<Robot> robots) {
+	public App(ArrayList<Robot> robots) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 		this.robots = robots;
+		Object o = OutilReflection.construire(Grille.class);
+		grille = (Grille) OutilReflection.invokeMethod(o, "constructor", null);
+		grille.setBorder(new EmptyBorder(5, 5, 5, 5)); 
+		hub = new ArrayList<HUB>();
 	}
 
 	//Affichage de la fenetre, de l'arene et des robots
@@ -37,12 +50,24 @@ public class App {
 			frame = new JFrame("Robot Plugins War");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setBounds(100, 100, 800, 800);
-			grille = new Grille();
-			grille.setBorder(new EmptyBorder(5, 5, 5, 5)); //Marge sur les bords de l'ecran
+			JPanel panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			
 			for (Robot r : robots) {
 				instanciateRobots(r);
+				hub.add(new HUB(r));
 			}
-			frame.setContentPane(grille);
+			
+			JPanel infosPanel = new JPanel();
+			infosPanel.setLayout(new GridLayout(1, robots.size()));
+			for(HUB h : hub) {
+				infosPanel.add(h);
+			}
+			
+			panel.add(infosPanel, BorderLayout.NORTH);
+			panel.add(grille, BorderLayout.CENTER);
+			
+			frame.setContentPane(panel);
 		}
 		frame.setVisible(true);
 	}
@@ -170,11 +195,14 @@ public class App {
 				if(attaquant.getEnergy() > energyUse) {
 					hasEnoughtEnergy = (Boolean) OutilReflection.invokeMethod(attaque, "attaque", attaquant, receveur); //return false si pas assez d'energie pour effectuer l'attaque
 				}
+				hub.get(robots.indexOf(receveur)).update();
 				if(receveur.getLife() <= 0) {
+					hub.remove(robots.indexOf(receveur));
 					robots.remove(receveur);
 					grille.getCell(receveur.getPosX(), receveur.getPosY()).setRobot(null);
 					grille.getCell(receveur.getPosX(), receveur.getPosY()).setBackground(Color.WHITE);
 				}
+				hub.get(robots.indexOf(attaquant)).update();
 			}
 		}
 		return hasEnoughtEnergy;
