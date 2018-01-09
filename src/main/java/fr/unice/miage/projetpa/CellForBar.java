@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class Cell extends JPanel {
+public class CellForBar extends JPanel {
 	
 	/**
 	 * 
@@ -19,7 +19,6 @@ public class Cell extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); 
-		this.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     }
 	
 	public Color getColor() {

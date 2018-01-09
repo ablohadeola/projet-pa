@@ -15,6 +15,7 @@ public class AttaqueLourde {
 
 	private int degat = 25;
 	private int energyUse = 50;
+	private int distanceAtk = 1;
 
 	/**
 	 * Le robot emetteur attaque le robot recepteur avec une attaque lourde
@@ -42,5 +43,10 @@ public class AttaqueLourde {
 	@PluginInfos(name = "getEnergyUse", who = "Robot")
 	public int getEnergyUse() {
 		return energyUse;
+	}
+	
+	@PluginInfos(name = "getDistanceAtk", who = "Robot")
+	public int getDistanceAtk() {
+		return distanceAtk;
 	}
 }

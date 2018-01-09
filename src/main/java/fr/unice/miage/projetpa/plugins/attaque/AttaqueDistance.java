@@ -1,24 +1,25 @@
 package fr.unice.miage.projetpa.plugins.attaque;
 
+import fr.unice.miage.projetpa.App;
 import fr.unice.miage.projetpa.Robot;
 import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
 /**
- * Ce plugin permet a un robot d'effectuer une attaque courte sur un autre robot
+ * Ce plugin permet a un robot d'effectuer une attaque a distance sur un autre robot
  * 
  * @author Melvin
  *
  */
-@Plugin(Nom = "attaqueCourte", Type = Plugin.Type.Attaque)
-public class AttaqueCourte {
+@Plugin(Nom = "AttaqueDistance", Type = Plugin.Type.Attaque)
+public class AttaqueDistance {
 
-	private int degat = 10;
-	private int energyUse = 5;
-	private int distanceAtk = 1;
+	private int degat = 2;
+	private int energyUse = 25;
+	private int distanceAtk = (int) Math.abs(Math.ceil(App.arenaSize - (App.arenaSize / 3)));
 
 	/**
-	 * Le robot emetteur attaque le robot recepteur avec une attaque courte
+	 * Le robot emetteur attaque le robot recepteur avec une attaque a distance
 	 * 
 	 * @param emetteur
 	 * @param recepteur
@@ -26,7 +27,7 @@ public class AttaqueCourte {
 	@PluginInfos(name = "attaque", who = "Robot")
 	public boolean attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= energyUse) {
-			System.out.println(emetteur.getName() + " attaque courte " + recepteur.getName());
+			System.out.println(emetteur.getName() + " attaque a distance " + recepteur.getName());
 			emetteur.setEnergy(emetteur.getEnergy() - energyUse);
 			recepteur.setLife(recepteur.getLife() - degat);
 			System.out.println("Vie de " + recepteur.getName() + " : " + recepteur.getLife());

@@ -5,9 +5,12 @@ import java.util.Random;
 
 import javax.swing.JComponent;
 
-import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
-
 public class Robot extends JComponent{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -426502312760795279L;
 
 	public static final int INITIAL_LIFE = 100;
 	
@@ -23,7 +26,7 @@ public class Robot extends JComponent{
 	private AtkType atkType;
 	
 	public static enum DepType { ALEATOIRE, INTELLIGENT, AVANT_ET_ARRIERE};
-	public static enum AtkType { COURTE, LOURDE, ABSORBE};
+	public static enum AtkType { COURTE, LOURDE, ABSORBE, DISTANCE};
 	
 	private Random rnd = new Random();
 

@@ -23,7 +23,7 @@ public class AttaqueAbsorbeVie {
 	 * @param recepteur
 	 */
 	@PluginInfos(name = "attaque", who = "Robot")
-	public void attaque(Robot emetteur, Robot recepteur) {
+	public boolean attaque(Robot emetteur, Robot recepteur) {
 		if (emetteur.getEnergy() >= ENERGIE_UTILISE) {
 			System.out.println(emetteur.getName() + " absorbe la vie de " + recepteur.getName());
 			emetteur.setEnergy(emetteur.getEnergy() - ENERGIE_UTILISE);
@@ -32,8 +32,10 @@ public class AttaqueAbsorbeVie {
 			System.out.println("Vie de " + recepteur.getName() + " : " + recepteur.getLife());
 			System.out.println("Vie de " + emetteur.getName() + " : " + emetteur.getLife());
 			System.out.println("Energy de " + emetteur.getName() + " : " + emetteur.getEnergy());
+			return true;
 		} else {
 			System.out.println("Energie de " + emetteur.getName() + " est insuffisante !");
+			return false;
 		}
 		// todo recepteur perd de l'energie que s'il est touché (dans le carre ou
 		// legerement plus loin de emetteur
