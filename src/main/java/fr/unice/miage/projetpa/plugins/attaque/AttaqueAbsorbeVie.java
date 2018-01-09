@@ -38,4 +38,9 @@ public class AttaqueAbsorbeVie {
 		// todo recepteur perd de l'energie que s'il est touché (dans le carre ou
 		// legerement plus loin de emetteur
 	}
+
+	@PluginInfos(name = "getEnergyUse", who = "Robot")
+	public int getEnergyUse() {
+		return ENERGIE_UTILISE;
+	}
 }

@@ -91,7 +91,9 @@ public class App {
 				attaque = OutilReflection.construire(AttaqueLourde.class);
 			}
 		} else if(attaquant.getAtkType() == Robot.AtkType.ABSORBE) {
-			attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
+			if(distance <= 1 && distance != -1){
+				attaque = OutilReflection.construire("fr.unice.miage.projetpa.plugins.AttaqueAbsorbeVie");
+			}
 		}
 		if(distance != -1 && attaque != null) {
 			int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
@@ -155,6 +157,9 @@ public class App {
 		if(robot.getDepType().equals(Robot.DepType.ALEATOIRE)) {
 			Object moveInstance = OutilReflection.construire(RandomMove.class);
 			value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
+		} else if(robot.getDepType().equals(Robot.DepType.AVANT_ET_ARRIERE)) {
+			Object moveInstance = OutilReflection.construire("fr.unice.miage.projetpa.plugins.deplacement.AvantEtArriereMove");
+			value = (Integer) OutilReflection.invokeMethod(moveInstance,"nextMove", robot, new Integer(arenaSize), new Integer(arenaSize)); 
 		}
 		return value;
 	}

@@ -21,7 +21,6 @@ public class OutilReflection {
 //                            System.out.println("Invoke " + name + " | on : " + pluginName + " | with :" + cible);
 //                        else
 //                            System.out.println("Invoke " + name);
- 
                         if(args.length == 1)
                             return method.invoke(pluginName, cible, args[0]);
                         else if(args.length == 2)

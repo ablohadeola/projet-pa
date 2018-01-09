@@ -11,7 +11,7 @@ public class Launcher {
     	Repository repository = new Repository(repository_path);
     	ArrayList<Robot> list_robot = new ArrayList<Robot>();
     	list_robot.add(new Robot("robot_1", Robot.DepType.ALEATOIRE, Robot.AtkType.COURTE));
-    	list_robot.add(new Robot("robot_2", Robot.DepType.ALEATOIRE, Robot.AtkType.LOURDE));
+    	list_robot.add(new Robot("robot_2", Robot.DepType.AVANT_ET_ARRIERE, Robot.AtkType.LOURDE));
     	App app = new App(repository, list_robot);
     	app.showFrame();
     	app.start();
