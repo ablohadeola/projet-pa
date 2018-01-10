@@ -10,6 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+* Il s'agit d'un JPanel qui pour un Robot donne, affiche son nom, sa barre de vie et sa barre d'energeie 
+*/
 public class HUB extends JPanel {
 	
 	Robot robot;

@@ -9,6 +9,9 @@ import fr.unice.miage.projetpa.plugins.core.Plugin;
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 import fr.unice.miage.projetpa.plugins.core.Plugin.Type;
 
+/**
+* Represente la grille de l'arene
+*/
 @Plugin(Nom = "Grille", Type = Type.Graphique)
 public class Grille extends JPanel {
 	
@@ -20,8 +23,7 @@ public class Grille extends JPanel {
 	
 	/**
 	 * Constructeur d'une grille de taille App.arenaSize
-	 */
-	
+	 */	
 	public Grille() {
 		GridLayout gridLayout = new GridLayout(App.arenaSize, App.arenaSize);
 		this.setLayout(gridLayout);

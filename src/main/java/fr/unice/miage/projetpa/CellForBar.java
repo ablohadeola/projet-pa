@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+
 public class CellForBar extends JPanel {
 	
 	/**

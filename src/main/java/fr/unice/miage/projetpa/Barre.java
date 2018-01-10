@@ -10,10 +10,17 @@ import javax.swing.JPanel;
 
 import fr.unice.miage.projetpa.plugins.core.PluginInfos;
 
+/**
+* Il s'agit d'un JPanel, qui affiche une quantite entre 0 et 100
+* dans la forme d'une barre. Peut etre utilise pour representer la vie
+* ou bien l'energie d'un robot.
+*/
 public class Barre extends JPanel {
 	
 	private Color color;
-	private CellForBar[] cases;
+	/* Les cellules de barre (nb : 100) pour representer this.number */
+	private CellForBar[] cases; 
+	/** A quantite a representer */
 	private int number;
 
 	public Barre(Color color, int n) {
@@ -37,6 +44,9 @@ public class Barre extends JPanel {
 		}
 	}
 	
+	/** Remplir le number premier cellules de la barre avec color
+	* et les autres avec blanc
+	*/
 	public void update() {
 		this.removeAll();
 		for(int i=0; i<100; i++) {
