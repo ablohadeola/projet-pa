@@ -1,0 +1,52 @@
+package fr.unice.miage.projetpa;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+public class CellForBar extends JPanel {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1224449844680443435L;
+	private Robot robot = null;
+	
+	/* 
+	 * Une cellule est un JPanel possedant des coutours noirs
+	 */
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g); 
+    }
+	
+	public Color getColor() {
+		return this.getBackground();
+	}
+	
+	public void setColor(Color c) {
+		this.setBackground(c);
+		this.revalidate();
+		this.repaint();
+	}
+	
+	/**
+	 * Indique si un robot est positionne sur cette cellule
+	 */
+	public boolean hasRobotOnIt() {
+		if(robot != null) {
+			this.setColor(robot.getColor());
+			return true;
+		} return false;
+	}
+
+	public Robot getRobot() {
+		return robot;
+	}
+
+	public void setRobot(Robot robot) {
+		this.robot = robot;
+	}
+
+}

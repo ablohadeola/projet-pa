@@ -1,0 +1,9 @@
+fr\plugins\appPlugins\attaque\AttaqueDistance.class
+fr\plugins\appPlugins\deplacement\RandomMove.class
+fr\plugins\appPlugins\graphique\RobotColor.class
+fr\plugins\appPlugins\Plugin.class
+fr\plugins\appPlugins\PluginInfos.class
+fr\plugins\appPlugins\Plugin$Type.class
+fr\plugins\appPlugins\attaque\AttaqueCourte.class
+fr\plugins\appPlugins\deplacement\AvantEtArriereMove.class
+fr\plugins\appPlugins\attaque\AttaqueLourde.class
