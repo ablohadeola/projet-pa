@@ -23,7 +23,7 @@ import fr.plugins.appPlugins.Plugin;
 public class App {
 	
 	//Taille de l'arène
-	public static int arenaSize = 6;
+	public static int arenaSize = 8;
 	
 	private JFrame frame;
 	private Grille grille;
@@ -38,7 +38,6 @@ public class App {
 		
 		pluginMap = myCl.findAllPlugins(file, pluginMap);
 		this.robots = robots;
-		Object o = OutilReflection.construire(Grille.class);
 		grille = new Grille();
 		grille.setBorder(new EmptyBorder(5, 5, 5, 5)); 
 		
@@ -47,7 +46,7 @@ public class App {
 		
 		for (Robot r : robots) {
 			instanciateRobots(r);
-			o = OutilReflection.construire(HUB.class, r);
+			Object o = OutilReflection.construire(HUB.class, r);
 			hub.add((HUB) OutilReflection.invokeMethod(o, "constructor", r));
 		}
 		
@@ -79,7 +78,6 @@ public class App {
 			Thread.sleep(100); //Attend 100ms
 			if(robots.get(robotNumber).getEnergy() > 5) { //Se deplacer coute 5, donc si energy < 5 on recharge, sinon on se deplace
 				move(robots.get(robotNumber), 0);
-				robots.get(robotNumber).setEnergy(robots.get(robotNumber).getEnergy() - 5);
 			} else {
 				rechargeEnergy(robots.get(robotNumber));
 			}
@@ -206,9 +204,9 @@ public class App {
 					}
 				}
 			} else {
-				Class first = getFirstPluginOfType("move");
-//				System.out.println(first.getSimpleName());
-				return myCl.loadPluginFromPluginFile(pluginMap.get(first.getSimpleName()));
+//				Class first = getFirstPluginOfType("move");
+////				System.out.println(first.getSimpleName());
+//				return myCl.loadPluginFromPluginFile(pluginMap.get(first.getSimpleName()));
 			}
 		}
 		return null;
@@ -253,6 +251,7 @@ public class App {
 				int energyUse = (Integer) OutilReflection.invokeMethod(attaque, "getEnergyUse", null);
 				int distanceAtk = (Integer) OutilReflection.invokeMethod(attaque, "getDistanceAtk", null);
 				int degat = (Integer) OutilReflection.invokeMethod(attaque, "getDegat", null);
+				System.out.println(attaquant.getName() + " " + cl.getSimpleName() + " " + receveur.getName());
 				if(attaquant.getEnergy() > energyUse) {
 					attaquant.setEnergy(attaquant.getEnergy() - energyUse);
 					receveur.setLife(receveur.getLife() - degat);
@@ -303,11 +302,15 @@ public class App {
 	 * Permet a un robot de se deplacer
 	 */
 	public void move(Robot robot, int awareStackOverFlow) throws Throwable {
+		if(!pluginMapHasThisTypeOfPlugin("move")) {
+			return;
+		}
 		awareStackOverFlow++;
 		if(awareStackOverFlow > 100) {
 			return;
 		}
 		int next_move = askNextMove(robot); //Demande au robot la direction de son prochain deplacement
+		if(next_move!=-1) { robot.setEnergy(robot.getEnergy() - 5);}
 		grille.getCell(robot.getPosX(), robot.getPosY()).setColor(Color.WHITE); //Efface la couleur de la case de l'ancienne position du robot
 		grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(null); //Indique a la grille qu'il n'y a plus de robot sur cette case
 		//HAUT
@@ -335,7 +338,7 @@ public class App {
 				return;
 			}
 		//DROITE
-		} else {
+		} else if(next_move == 4) {
 			if(robot.getPosX() <= App.arenaSize-1 && !grille.getCell(robot.getPosX()+1, robot.getPosY()).hasRobotOnIt()) {
 				robot.setPosX(robot.getPosX()+1);
 			} else {
@@ -357,9 +360,13 @@ public class App {
 	public int askNextMove(Robot robot) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException, IllegalArgumentException, IOException {
 		int value = -1;
 		if(robot.getDepType().equals(Robot.DepType.ALEATOIRE)) {
-			Class cl = getPluginMove(robot);
-			Object moveInstance = OutilReflection.construire(cl);
-			value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
+			if(pluginMap.containsKey("RandomMove")) {
+				Class cl = getPluginMove(robot);
+				Object moveInstance = OutilReflection.construire(cl);
+				value = (Integer) OutilReflection.invokeMethod(moveInstance, "nextMove", null);
+			} else {
+				return -1;
+			}
 		} else if(robot.getDepType().equals(Robot.DepType.AVANT_ET_ARRIERE)) {
 			Object moveInstance = OutilReflection.construire("fr.unice.miage.projetpa.plugins.deplacement.AvantEtArriereMove");
 			value = (Integer) OutilReflection.invokeMethod(moveInstance,"nextMove", robot, new Integer(arenaSize), new Integer(arenaSize)); 
@@ -378,10 +385,12 @@ public class App {
 			robot.setPosX(x);
 			robot.setPosY(y);
 			grille.getCell(robot.getPosX(), robot.getPosY()).setRobot(robot);
-			Class cl = myCl.loadPluginFromPluginFile(pluginMap.get("RobotColor"));
-			Object robotColor = OutilReflection.construire(cl);
-			Color color = (Color) OutilReflection.invokeMethod(robotColor, "getColor", null);
-			robot.setColor(color);
+			if(pluginMapHasThisTypeOfPlugin("robotcolor")) {
+				Class cl = myCl.loadPluginFromPluginFile(pluginMap.get("RobotColor"));
+				Object robotColor = OutilReflection.construire(cl);
+				Color color = (Color) OutilReflection.invokeMethod(robotColor, "getColor", null);
+				robot.setColor(color);
+			}
 			grille.update();
 		} else {
 			instanciateRobots(robot);

@@ -17,7 +17,7 @@ public class Robot extends JComponent{
 	private String name;
 	private int life = INITIAL_LIFE;
 	private int energy = 100;
-	private Color color;
+	private Color color = Color.BLACK;
 	private int posX;
 	private int posY;
 	private int depX = 0;
