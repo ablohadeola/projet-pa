@@ -167,23 +167,22 @@ public class App {
 						return myCl.loadPluginFromPluginFile(pluginMap.get(pluginName));
 					}
 				}
-			}else if(robot.getAtkType() == Robot.AtkType.LOURDE) {
+			} if(robot.getAtkType() == Robot.AtkType.LOURDE) {
 				for(String pluginName : pluginMap.keySet()) {
 					if(pluginName.contains("AttaqueLourde")) {
 						return myCl.loadPluginFromPluginFile(pluginMap.get(pluginName));
 					}
 				}
-			} else if(robot.getAtkType() == Robot.AtkType.DISTANCE) {
+			} if(robot.getAtkType() == Robot.AtkType.DISTANCE) {
 				for(String pluginName : pluginMap.keySet()) {
 					if(pluginName.contains("AttaqueDistance")) {
 						return myCl.loadPluginFromPluginFile(pluginMap.get(pluginName));
 					}
 				}
-			} else {
-				Class first = getFirstPluginOfType("attaque");
-//				System.out.println(first.getSimpleName());
-				return myCl.loadPluginFromPluginFile(pluginMap.get(first.getSimpleName()));
 			}
+			Class first = getFirstPluginOfType("attaque");
+//				System.out.println(first.getSimpleName());
+			return myCl.loadPluginFromPluginFile(pluginMap.get(first.getSimpleName()));
 		}
 		return null;
 	}
