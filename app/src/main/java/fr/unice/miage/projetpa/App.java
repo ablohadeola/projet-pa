@@ -32,7 +32,7 @@ public class App {
 	private JPanel panel = new JPanel();
 	MyClassLoader myCl = new MyClassLoader();
 	HashMap<String, File> pluginMap = new HashMap<String, File>(); 
-	File file = new File("C:\\ProjetPA\\projetpa\\plugins\\target\\classes");
+	File file = new File("..\\plugins\\target\\classes");
 	
 	public App(ArrayList<Robot> robots) throws Throwable {
 		
